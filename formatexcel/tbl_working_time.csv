@@ -1,0 +1,15 @@
+ID;USER_AREA;DAY;SHIFT;START;FINISH;DURASI;
+1;Assembly;Monday;Day;07:20:00;16:15:00;0;
+2;Assembly;Monday;Night;21:05:00;04:45:00;0;
+4;Assembly;Tuesday;Day;07:20:00;16:15:00;0;
+5;Assembly;Tuesday;Night;21:05:00;04:45:00;0;
+7;Assembly;Wednesday;Day;07:20:00;16:15:00;0;
+8;Assembly;Wednesday;Night;21:05:00;04:45:00;0;
+10;Assembly;Thursday;Day;07:20:00;16:15:00;0;
+11;Assembly;Thursday;Night;21:05:00;05:45:00;0;
+13;Assembly;Friday;Day;07:20:00;16:30:00;0;
+14;Assembly;Friday;Night;21:05:00;04:45:00;0;
+16;Assembly;Saturday;Day;07:20:00;16:15:00;0;
+17;Assembly;Saturday;Night;21:05:00;04:45:00;0;
+19;Assembly;Sunday;Day;07:20:00;16:15:00;0;
+20;Assembly;Sunday;Night;21:05:00;04:45:00;0;

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" media="all" type="text/css" href="jquery-ui.css" />
+	<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
+	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="jquery-ui.min.js"></script>
+	<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
+	<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
+  
+  <script>
+  // http://cariprogram.blogspot.com
+  // nuramijaya@gmail.com
+
+  $(document).ready(function() {
+    //$("#datepicker").datepicker();
+    //$("#datepicker").datepicker(
+    //{
+    //   dateFormat: 'dd/mm/yy',
+    //   changeMonth: true,
+    //   changeYear: true
+    //defaultDate: '20/03/2010'
+    // });
+	 
+	$('#datepicker').datetimepicker({
+	dateFormat: 'yy-mm-dd',
+	timeFormat: 'HH:mm:ss',
+	stepHour: 2,
+	stepMinute: 10,
+	stepSecond: 10
+	});
+  });
+  </script>
+</head>
+<body style="font-size:62.5%;">
+  
+Date: <input type="text" id="datepicker" name="datepicker" value=""></p>
+
+</body>
+</html>

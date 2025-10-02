@@ -1,0 +1,46 @@
+{
+  "short_name": "JSS",
+  "name": "Junbiki Seat System",
+  "icons": [
+    {
+      "src": "assets/img/logo.jpg",
+      "sizes": "36x36",
+      "type": "image/jpg",
+      "density": 0.75
+    },
+    {
+      "src": "assets/img/logo.jpg",
+      "sizes": "48x48",
+      "type": "image/jpg",
+      "density": 1.0
+    },
+    {
+      "src": "assets/img/logo.jpg",
+      "sizes": "72x72",
+      "type": "image/jpg",
+      "density": 1.5
+    },
+    {
+      "src": "assets/img/logo.jpg",
+      "sizes": "96x96",
+      "type": "image/jpg",
+      "density": 2.0
+    },
+    {
+      "src": "assets/img/logo.jpg",
+      "sizes": "144x144",
+      "type": "image/jpg",
+      "density": 3.0
+    },
+    {
+      "src": "assets/img/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg",
+      "density": 4.0
+    }
+  ],
+  "start_url": "index.php",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1c1c1c"
+}
