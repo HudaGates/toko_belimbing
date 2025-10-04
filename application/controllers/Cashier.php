@@ -11,12 +11,13 @@ class Cashier extends CI_Controller{
   public $idcard;
   public $nama;
   public $id_t;
+  public $s_model;
     function __construct(){
         parent::__construct();
+        $this->load->model('s_model');
         $this->id_t=$this->input->get('api');
-        $query=$this->s_model->s_access($this->id_t); 
-        $query=$query->row();
-        if($query->user_level=='Cashier'){            
+        $query=$this->s_model->s_access($this->id_t)->row(); 
+        if($query && $query->user_level=='Cashier'){            
           $this->nama=$query->nama;
           $this->user_level=$query->user_level;
           $this->user_area=$query->user_area;
@@ -30,7 +31,12 @@ function index(){
   $cartid = $this->input->get('cartid');
   $qhc=$this->db->query("SELECT * from tbl_history_sale where id= '". $cartid . "'")->result();
   if(count($qhc)>0){
-    return $this->openviewcart();
+    if(method_exists($this, 'openviewcart')){
+      return $this->openviewcart();
+    } else{
+      show_error("Function openviewcart() belum dibuat di controller Cashier", 500);
+    }
+    
   }
 
   $qtc=$this->db->query("SELECT customer_name from tbl_master_customer order by customer_name asc")->result();
@@ -40,7 +46,7 @@ function index(){
   $qmp=$this->db->query("SELECT * from tbl_master_product group by product_name order by id asc")->result();
   //  $cartid=$this->db->query("SELECT UUID() as cartid")->row();
   $qhc=$this->db->query("SELECT * from tbl_history_sale where cashier= '". $this->nama . "' AND status = 'init'")->row();
-  if(count($qhc)==0){
+  if(($qhc)){
     // $cartid=$this->db->query("SELECT UUID() as cartid")->row();
     $data=array(
       'status'=>'init',

@@ -8,7 +8,11 @@ class Action extends CI_Controller{
     public $cart;
     public $email;
     public $agent;
-    private $_user;
+    public $_user;
+	public $input;
+	public $db;
+	public $form_validation;
+	public $sha1;
 function __construct(){
 	parent::__construct();
 	$this->load->library('user_agent');
