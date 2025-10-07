@@ -1,5 +1,6 @@
 <?php if(!defined('BASEPATH')) exit('Hacking Attempt : Keluar dari sistem..!');
 class Ajax extends CI_Controller {
+	public $database;
 	function __construct(){
 		parent::__construct();
 		$api=$this->input->get('api');
