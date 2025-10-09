@@ -544,7 +544,9 @@ class TransactionModel extends CI_Model
             Editor::inst($this->editorDb, $table)
                 ->fields(
                     Field::inst('id'),
+                    Field::inst('sale_id')->validator('Validate::notEmpty'),
                     Field::inst('product_code')->validator('Validate::notEmpty'),
+                    Field::inst('product_name')->validator('Validate::notEmpty'),
                     Field::inst('quantity')->validator('Validate::notEmpty'),
                     Field::inst('unit_price')->validator('Validate::notEmpty'),
                     Field::inst('sub_total')->validator('Validate::notEmpty'),
