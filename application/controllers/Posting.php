@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Postingpc extends CI_Controller{
+class Posting extends CI_Controller{
   public $shift;
   public $prod_date;
   public $user_level;
@@ -11,18 +11,25 @@ class Postingpc extends CI_Controller{
   public $idcard;
   public $nama;
   public $id_t;
-  function __construct(){
+  function __construct() {
     parent::__construct();
-    $this->id_t=$this->input->get('api');
-    $query=$this->s_model->s_access($this->id_t); 
-    $query=$query->row();
-    if($query->user_level=='Posting'){            
-      $this->nama=$query->nama;
-      $this->user_level=$query->user_level;
-      $this->user_area=$query->user_area;
-      $this->idcard=$query->idcard;
-    }else{
-      redirect('action/scan?api='.$this->id_t);
+    $this->id_t = $this->input->get('api');
+    $query = $this->s_model->s_access($this->id_t); 
+    $query = $query->row();
+
+    if (!$query) {
+        #echo "❌ Tidak ada data API ditemukan untuk id_t: " . $this->id_t;
+        #exit;
+    }
+
+    // ✅ ubah bagian ini:
+    if ($query->user_level == 'Posting' || $query->user_level == 'Administrator') {
+        $this->nama       = $query->nama;
+        $this->user_level = $query->user_level;
+        $this->user_area  = $query->user_area;
+        $this->idcard     = $query->idcard;
+    } else {
+        redirect('action/scan?api=' . $this->id_t);
     }
 }
 function index(){
@@ -35,7 +42,7 @@ function index(){
     ); 
   $this->load->view('user/posting/home',$data);
 }
-function postingpc(){
+function posting(){
   // echo 'test';
   $qt = $this->db->get('tbl_title', 1)->row();
   $datapos=$this->db->query("SELECT * from tbl_master_posting group by pos_level order by id asc")->result();
@@ -43,7 +50,7 @@ function postingpc(){
         'datapos'=>$datapos,
         'qt'=>$qt
     ); 
-  $this->load->view('user/postingpc/scan',$data);
+  $this->load->view('user/posting/scan',$data);
 }
 
 function start(){
@@ -96,7 +103,7 @@ function start(){
         'qp'=>$qp,
 
     );  
-      $this->load->view('user/postingpc/scan',$data);
+      $this->load->view('user/posting/scan',$data);
   }
 function scan(){
     $data = array ('status' => false);
