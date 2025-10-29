@@ -53,3 +53,5 @@ $route['default_controller'] = 'action';
 $route['posting'] = 'postingpc';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+#$route['posting'] = '';
+
