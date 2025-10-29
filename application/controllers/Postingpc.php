@@ -33,7 +33,7 @@ function index(){
         'datapos'=>$datapos,
         'qt'=>$qt
     ); 
-  $this->load->view('user/posting/home',$data);
+  $this->load->view('user/posting1/home',$data);
 }
 function postingpc(){
   // echo 'test';

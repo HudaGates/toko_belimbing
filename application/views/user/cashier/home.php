@@ -5,456 +5,359 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Cashier - TOKO BELIMBING</title>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="<?=base_url('assets/lte/plugins/fontawesome-free/css/all.min.css');?>">
     <link rel="stylesheet" href="<?=base_url('assets/lte/dist/css/adminlte.min.css');?>">
     <link rel="stylesheet" href="<?=site_url('assets/lte/sweetalert/sweetalert.css');?>" />
-    <style type="text/css">
-    * {
-        box-sizing: border-box;
-    }
-
-    html,
+    <style>
+    /* Styling dasar dari sebelumnya */
     body {
-        height: 100% !important;
-        width: 100%;
-        padding: 0px;
-        margin: 0px;
-        font-family: 'Microsoft Sans Serif', sans-serif;
-        overflow-x: auto;
-        overflow-y: auto;
-        text-align: center;
+        background-color: #f6f7fb;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
     }
 
-    #loading {
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        background-color: #fff;
+    /* Header */
+    .cashier-header {
+        background: #ffffff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
-    .link {
-        background-color: #c9c;
+    .cashier-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: #222;
     }
 
-    .link:hover,
-    .link:focus,
-    .link:active {
-        background-color: #ccc;
+    .cashier-info {
+        font-size: 13px;
+        color: #666;
+    }
+
+    /* Logout button hover */
+    .logout-btn img {
         cursor: pointer;
+        transition: transform 0.2s ease;
     }
 
-    .autocomplete-suggestions {
-        border: 1px solid #999;
-        background: #FFF;
-        overflow: auto;
-
+    .logout-btn img:hover {
+        transform: scale(1.1);
     }
 
-    .autocomplete-suggestion {
-        padding: 2px 5px;
-        white-space: nowrap;
-        overflow: hidden;
+    /* Cart Panel */
+    .cart-panel {
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
-    .autocomplete-selected {
-        background: #F0F0F0;
+    .cart-header {
+        background: #f2f2f2;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 8px;
     }
 
-    .autocomplete-suggestions strong {
-        font-weight: normal;
-        color: #3399FF;
+    #detail_cart {
+        flex: 1;
+        overflow-y: auto;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background-color: #fafafa;
+        padding: 6px;
+        margin-top: 6px;
     }
 
-    .autocomplete-group {
-        padding: 2px 5px;
+    /* Custom Total Amount Styling */
+    .amount-display-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #212529;
+    }
+    
+    .amount-display-box .total-label {
+        font-size: 1.2rem;
+        color: #6c757d;
+    }
+    
+    .amount-display-box .amount-value {
+        font-size: 1.4rem;
+        color: #212529;
+    }
+    
+    /* Tombol BAYAR (Custom style untuk meniru screenshot 2) */
+    .btn-pay-custom {
+        background-color: #007bff !important; /* Warna biru solid */
+        border: none;
+        border-radius: 0 !important;
+        font-size: 1.5rem;
+        padding: 15px 0;
+        font-weight: 700;
     }
 
-    .autocomplete-group strong {
-        display: block;
-        border-bottom: 1px solid #000;
+    /* Tombol Customer/History Container */
+    .customer-history-box {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .btn-customer-custom {
+        border-radius: 8px !important;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 10px 15px;
+        background-color: #4a82ff !important; /* Biru Primer */
+        color: white !important;
+        border: 1px solid #4a82ff !important;
+    }
+
+    .btn-history-custom {
+        border-radius: 8px !important;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 10px 15px;
+        background-color: #f2f2f2 !important; /* Abu-abu terang */
+        color: #495057 !important;
+        border: 1px solid #f2f2f2 !important;
+    }
+
+
+    /* Styling Lainnya dari kode Anda */
+    #product-container {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 12px;
+        overflow-y: auto;
+        height: 90%;
+    }
+
+    #tag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+    
+    .product-header-box {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 14px 18px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .modern-input {
+        border-radius: 8px !important;
+        border: 1px solid #d8dbe2;
+        transition: all 0.2s;
+    }
+    
+    .modern-input:focus {
+        border-color: #4a6cf7;
+        box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+    }
+    
+    .footer-marquee {
+        flex: 1;
+        text-align: center;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        padding: 10px 16px; 
     }
     </style>
-    <script type="text/javascript">
-    //set timezone
+    <script>
     <?php date_default_timezone_set('Asia/Jakarta'); ?>
-    //buat object date berdasarkan waktu di server
-    var serverTime = new Date(<?=date('Y, m, d, H, i, s, 0'); ?>);
-    //buat object date berdasarkan waktu di client
+    var serverTime = new Date(<?=date('Y, m, d, H, i, s, 0');?>);
     var clientTime = new Date();
-    //hitung selisih
     var Diff = serverTime.getTime() - clientTime.getTime();
-    //fungsi displayTime yang dipanggil di bodyOnLoad dieksekusi tiap 1000ms = 1detik
+
     function displayServerTime() {
-        //buat object date berdasarkan waktu di client
-        var clientTime = new Date();
-        //buat object date dengan menghitung selisih waktu client dan server
-        var time = new Date(clientTime.getTime() + Diff);
-        //ambil nilai jam
-        var sh = time.getHours().toString();
-        //ambil nilai menit
-        var sm = time.getMinutes().toString();
-        //ambil nilai detik
-        var ss = time.getSeconds().toString();
-        //tampilkan jam:menit:detik dengan menambahkan angka 0 jika angkanya cuma satu digit (0-9)
-        document.getElementById("clock").innerHTML = (sh.length == 1 ? "0" + sh : sh) + ":" + (sm.length == 1 ? "0" +
-            sm : sm) + ":" + (ss.length == 1 ? "0" + ss : ss);
+        var time = new Date(new Date().getTime() + Diff);
+        var h = String(time.getHours()).padStart(2, '0');
+        var m = String(time.getMinutes()).padStart(2, '0');
+        var s = String(time.getSeconds()).padStart(2, '0');
+        document.getElementById("clock").innerHTML = h + ":" + m + ":" + s;
     }
     </script>
 </head>
 
 <body onLoad="setInterval('displayServerTime()',1000);">
-    <table border="1" style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;border-color: #fff;">
-        <tr>
-            <td style="height:5% " class=" bg-white">
-                <table border="1" style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                    <tr>
-                        <td style="width:3%; height:100%" class="bg-white">
-                            <img src="<?=base_url('assets/img/png-clipart-sale.png');?>"
-                                style="width:50px;height:35px;vertical-align: middle;">
-                        </td>
-                        <td style="width:27%;padding: 0px;font-size: 150%;vertical-align: middle;color:#000">
-                            <h5 class="m-0 font-weight-bold">TOKO BELIMBING</h5>
-                            <p class="m-0 text-xs"><?=$qt->address?></p>
-                        </td>
-                        <td style="padding: 0px;font-size: 150%;vertical-align: middle;" class="text-bold;">
-                            <table border="0"
-                                style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                                <tr>
-                                    <td style="width: 15%; padding: 5px;font-size: 100%;vertical-align: middle;"
-                                        class="text-bold">
-                                        Cashier 1
-                                    </td>
-                                    <td style="width: 30%; padding: 0px;font-size: 100%;vertical-align: middle;"
-                                        class="text-bold;">
-                                        <?=$nama?>
-                                    </td>
-
-                                    <td style="padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
-                                        <?=date('l, d-m-Y');?>
-                                    </td>
-                                    <td style="width: 20%; padding: 5px;font-size: 100%;vertical-align: middle;"
-                                        class="text-bold">
-                                        <span id="clock"></span>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </td>
-                        <td onclick="logout()" style="width: 40px;" class="bg-white">
-                            <img src="<?=base_url('assets/img/logout.png');?>"
-                                style="width:40px;height:35px;vertical-align: middle;">
-                        </td>
-                    </tr>
-
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td style="height:90%" class=" bg-white">
-                <table border="1" style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                    <tr>
-                        <td style="width: 30%; padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
-                            <table border="0"
-                                style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                                <tr>
-                                    <td style="height: 7%; padding: 0px;font-size: 100%;vertical-align: middle;"
-                                        class="text-bold;">
-                                        <table border="0"
-                                            style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                                            <tr style="background-color: #dedede;">
-                                                <td style="width: 60%; font-size: 60%;">
-                                                    CART ID
-                                                </td>
-
-                                                <td style="font-size: 60%;">
-                                                    STATUS
-                                                </td>
-                                                <td style="font-size: 60%;">
-                                                    SOURCE
-                                                </td>
-                                                <td style="font-size: 60%;">
-                                                    CLEAR CART
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-weight-bold" style="background-color: yellow;">
-                                                    <?=$qhc->id?>
-                                                    <input id="cartid" type="text" value="<?=$qhc->id?>" hidden>
-                                                </td>
-                                                <td class="font-weight-bold" style="background-color: lime;">
-
-                                                    <?=strtoupper($qhc->status)?>
-                                                    <!-- <input id="sourceid" type="text" value="<?=$qhc->status?>"> -->
-                                                </td>
-                                                <td class="font-weight-bold" style="background-color: lime;">
-                                                    <?=strtoupper($qhc->cart_source)?>
-                                                    <input id="sourceid" type="text" value="<?=$qhc->id?>" hidden>
-                                                </td>
-                                                <td onclick="<?=$qhc->status == 'done'?'':'clearCart()'?>"
-                                                    class="font-weight-bold"
-                                                    style="cursor: pointer; background-color: red;">
-                                                    <?=$qhc->status == 'done'?'DONE':'CLEAR'?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-
-                                                <td colspan="4">
-                                                    <table border="1" style="width:100%;">
-                                                        <tr>
-                                                            <td
-                                                                style="width: 15%; padding: 5px;font-size: 100%;vertical-align: middle; font-size: 60%;">
-                                                                CUSTOMER
-                                                            </td>
-                                                            <td style="padding: 0px;font-size: 100%;vertical-align: middle;"
-                                                                class="font-weight-bold text-sm">
-                                                                <!-- 081234567891 | Prasetia Eko Nugroho | L | Sarwadadi -->
-                                                                <div class="ui-widget">
-                                                                    <!-- <label for="customer_name">Tags: </label> -->
-                                                                    <input id="customer_name" name="customer_name"
-                                                                        value="<?=$qhc->customer_name?>"
-                                                                        style="width: 100%;">
-                                                                </div>
-                                                            </td>
-
-                                                        </tr>
-                                                        <!-- <tr>
-                                                            <td
-                                                                style="width: 15%; padding: 5px;font-size: 100%;vertical-align: middle; font-size: 60%;">
-                                                                POINT
-                                                            </td>
-                                                            <td style="padding: 0px;font-size: 100%;vertical-align: middle;"
-                                                                class="font-weight-bold text-sm">
-                                                                30
-                                                            </td>
-                                                        </tr> -->
-                                                    </table>
-                                                </td>
-
-                                            </tr>
-
-                                        </table>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td style="padding: 0px;font-size: 100%;vertical-align: top;" class="text-bold;">
-
-                                        <div id="detail_cart" style="height: 500px; overflow-y: scroll;">
-
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td style="height: 10%; background-color:#efefef;">
-                                        <table border="1"
-                                            style="height:100%;width: 100%;border-spacing: 4px;border-collapse: separate;">
-                                            <tr>
-                                                <td
-                                                    style="width: 30%; padding: 5px;font-size: 130%;vertical-align: middle; font-weight: bold; text-align :right">
-                                                    Jumlah
-                                                </td>
-                                                <td
-                                                    style="padding: 5px;font-size: 150%;vertical-align: middle; font-weight: bold; background-color:blue; color: #fff">
-                                                    <span id="amount-display" class="p-0"></span>
-                                                    <input id="amount" type="number"
-                                                        style="font-weight: bold; background-color:blue; color: #fff; border: 0"
-                                                        readonly hidden>
-                                                </td>
-                                            </tr>
-                                            <!-- <tr>
-                                                <td style=" padding: 5px;font-size: 130%;vertical-align: middle; font-weight: bold; text-align :right
-                                                    ">
-                                                    Bayar
-                                                </td>
-                                                <td style="padding: 5px;font-size: 150%;vertical-align: middle; font-weight: bold"
-                                                    class="text-bold;">
-                                                    <input oninput="getMoneyChange()" id="cash" type="number">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td
-                                                    style="width: 7%; padding: 5px;font-size: 130%;vertical-align: middle; font-weight: bold; text-align :right">
-                                                    Kembalian
-                                                </td>
-                                                <td id="change"
-                                                    style="padding: 5px;font-size: 150%;vertical-align: middle; font-weight: bold; background-color: limegreen"
-                                                    class="text-bold">
-                                                    -
-                                                </td>
-                                            </tr> -->
-
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="height: 10%;font-size:150%">
-                                        <div class="row">
-
-                                            <div class="col-4 px-2">
-                                                <!-- <button onclick="printReceipt()" type="button"
-                                                    class="btn btn-danger w-100 p-1 font-weight-bold"
-                                                    style="font-size: 70%">CETAK</button> -->
-
-                                                <button onclick="closeOpenCart()" type="button"
-                                                    class="btn btn-danger w-100 p-1 font-weight-bold <?=$qhc->status == 'done'?'':'d-none'?>"
-                                                    style="font-size: 70%">Close</button>
-                                                <!-- <button onclick="skipcart()"
-                                                    class="btn btn-primary w-100 p-1 font-weight-bold"
-                                                    style="font-size: 70%">SIMPAN</button> -->
-                                            </div>
-                                            <div class="col-8 px-0 pr-3">
-
-                                                <button onclick="pay()"
-                                                    class="btn btn-primary w-100 h-100 p-1 font-weight-bold"
-                                                    <?=$qhc->status == 'done'?'disabled':''?>
-                                                    style="font-size: 110%">BAYAR</button>
-                                            </div>
-                                        </div>
-
-
-
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-
-
-                        <td style="padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
-                            <table border="0"
-                                style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                                <tr>
-
-                                    <td style="height:5%;padding: 0px;font-size: 150%;vertical-align: middle;color:#000"
-                                        class="text-bold;">
-
-                                        <table border="1" class="text-left"
-                                            style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                                            <tr>
-
-                                                <td style="width:30%;padding: 0px;font-size: 100%;vertical-align: middle;color:#000"
-                                                    class="text-bold p-1">
-                                                    SKU <span id="sku-status" style="color: red; font-size:80%;"></span>
-                                                    <input id="input_sku" type="text" style="width: 100%;" autofocus>
-                                                </td>
-
-                                                <td style="width:30%;padding: 0px;font-size: 100%;vertical-align: middle;color:#000"
-                                                    class="text-bold p-1">
-                                                    SEARCH
-                                                    <input id="search" oninput="search()" type="text"
-                                                        style="width: 100%;">
-                                                </td>
-                                                <td style="width: 2%;" class="p-1">
-                                                    <button onclick="search('')" class="btn p-0"
-                                                        style="font-weight: bold; font-size:100%; ">Reload
-                                                    </button>
-                                                </td>
-
-
-
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3" style="padding: 5px;font-size: 100%;"
-                                                    class="text-bold;">
-                                                    <div class="row">
-                                                        <div class="col-1 font-weight-bold">TAG</div>
-                                                        <div class="col-11" id="tag-container"></div>
-                                                    </div>
-
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-
-                                </tr>
-                                <tr>
-
-                                    <td id='product-container'
-                                        style="padding: 5px;font-size: 150%;vertical-align: top; text-align:center;background-color:#efefef; height: 90%"
-                                        class="text-bold;">
-                                        Loading ...
-
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </td>
-
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <table border="1"
-                    style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;border-color: #fff;">
-                    <tr>
-                        <td style="height:10% " class=" bg-white">
-                            <table border="1"
-                                style="height:100%;width: 100%;border-spacing: 0px;border-collapse: collapse;">
-                                <tr>
-
-                                    <td style="width:30%;padding: 0px;font-size: 150%;vertical-align: middle;color:#000"
-                                        class="text-bold;">
-                                        <button class="btn btn-sm btn-primary text-xs" onclick="formcustomer()">DATA
-                                            CUSTOMER</button>
-                                        <button onclick="historysale()" class="btn btn-sm btn-primary text-xs">HISTORY
-                                            SALE</button>
-                                        <!-- <button onclick="historysaleist()"
-                                            class="btn btn-sm btn-primary text-xs">OTP</button> -->
-
-                                        <!-- <button onclick="truncate()" class="btn btn-sm btn-danger text-xs">TRUNCATE (for
-                                            Development)</button> -->
-                                    </td>
-                                    <td style="padding: 0px;font-size: 150%;vertical-align: middle; background-color: #171718; color: #f5f5f7"
-                                        class="text-bold; pt-2">
-                                        <marquee behavior="" direction="left">WELLCOME BELIMBING STORE</marquee>
-
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                </table>
-            </td>
-        </tr>
-    </table>
-    <div class="modal fade" id="modalxl">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content ">
-                <div id="modalcontent" class="modal-body">
-                    TES
+    <div class="container-fluid vh-100 d-flex flex-column">
+        <div class="cashier-header">
+            <div class="d-flex align-items-center">
+                <img src="<?=base_url('assets/img/png-clipart-sale.png');?>"
+                    style="width:50px;height:35px;margin-right:10px;">
+                <div>
+                    <h5>TOKO BELIMBING</h5>
+                    <div class="cashier-info"><?=$qt->address?></div>
                 </div>
             </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <div class="modal fade" id="modallg">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content ">
-                <div id="modalcontentlg" class="modal-body">
-                    TES
+            <div class="d-flex align-items-center gap-3">
+                <div>
+                    <div><strong>Cashier 1:</strong> <?=$nama?></div>
+                    <div><?=date('l, d-m-Y');?> | <span id="clock"></span></div>
+                </div>
+                <div class="logout-btn" onclick="logout()">
+                    <img src="<?=base_url('assets/img/logout.png');?>" style="width:40px;height:35px;">
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- <script src="<?=site_url('assets/lte/jquery/jquery-2.2.3.min.js')?>"></script>
-    <script src="<?=base_url('assets/lte/sweetalert/sweetalert.js')?>"></script> -->
 
-    <script src="<?=base_url('assets/lte/jquery/jquery-2.1.3.min.js')?>"></script>
+        <div class="row flex-grow-1 mt-2">
+            <div class="col-md-4 d-flex flex-column">
+                <div class="cart-panel">
+                    <input id="cartid" type="hidden" value="<?=$qhc->id?>">
+
+                    <table class="table table-sm cart-table mb-2">
+                        <thead class="cart-header">
+                            <tr>
+                                <th>CART ID</th>
+                                <th>STATUS</th>
+                                <th>SOURCE</th>
+                                <th>CLEAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="bg-warning fw-bold"><?=$qhc->id?></td>
+                                <td class="bg-success text-white fw-bold"><?=strtoupper($qhc->status)?></td>
+                                <td class="bg-success text-white fw-bold"><?=strtoupper($qhc->cart_source)?></td>
+                                <td onclick="<?=$qhc->status == 'done'?'':'clearCart()'?>"
+                                    class="bg-danger text-white text-center fw-bold" style="cursor:pointer;">
+                                    <?=$qhc->status == 'done'?'DONE':'CLEAR'?>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mb-2">
+                        <label class="small fw-bold">Customer</label>
+                        <input id="customer_name" name="customer_name" class="form-control form-control-sm"
+                            value="<?=$qhc->customer_name?>">
+                    </div>
+
+                    <div id="detail_cart" class="flex-grow-1"></div>
+
+                    <div class="mt-3">
+                        <div class="amount-display-box">
+                            <span class="total-label">Total</span>
+                            <div class="amount-value">
+                                <span id="amount-display">Rp 0,00</span>
+                                <input id="amount" type="hidden" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 d-flex gap-2">
+                        <button onclick="closeOpenCart()" type="button"
+                            class="btn btn-danger btn-modern w-50 <?=$qhc->status == 'done'?'':'d-none'?>">Close</button>
+                        
+                        <button onclick="pay()" class="btn btn-primary w-100 btn-pay-custom"
+                            <?=$qhc->status == 'done'?'disabled':''?>>BAYAR</button>
+                    </div>
+
+                    <div class="customer-history-box mt-3">
+                        <div class="d-flex gap-2">
+                            <button class="btn w-50 btn-customer-custom" onclick="formcustomer()">DATA CUSTOMER</button>
+                            <button onclick="historysale()" class="btn w-50 btn-history-custom">HISTORY SALE</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-8 d-flex flex-column">
+                <div class="product-header-box mb-2">
+                    
+                    <div class="row g-2 align-items-end">
+                        
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small text-secondary mb-1">SKU</label>
+                            <input id="input_sku" type="text" class="form-control form-control-sm modern-input" 
+                                placeholder="cari produk anda disini..." autofocus 
+                                style="border: 1px solid #007bff; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);"> 
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-secondary mb-1">Search</label>
+                            <input id="search" oninput="search()" type="text" 
+                                class="form-control form-control-sm modern-input" placeholder="cari produk anda disini...">
+                        </div>
+
+                        <div class="col-md-2 d-flex align-items-end justify-content-end">
+                            <button onclick="search('')" class="btn btn-sm reload-btn border-0" 
+                                style="background: none; color: #495057; font-weight: 500; padding: 0;">
+                                Reload
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-3">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <span class="fw-semibold me-2 text-secondary">TAG</span>
+                            <div id="tag-container" class="d-flex flex-wrap gap-2">
+                                
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #4a82ff; color: white; border-radius: 8px;">ALAT MANDI</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #4a82ff; color: white; border-radius: 8px;">MINUMAN</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PEMBALUT</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PET FOOD</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">ROKOK</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SABUN</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SEMBAKO</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SPAREPART</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="product-container" class="product-list-box flex-grow-1 text-center">
+                    Loading ...
+                </div>
+            </div>
+        </div>
+        <div class="footer-bar mt-2">
+            <div class="footer-marquee">
+                <marquee>WELCOME BELIMBING STORE</marquee>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalxl">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content ">
+                    <div id="modalcontent" class="modal-body">
+                        TES
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modallg">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content ">
+                    <div id="modalcontentlg" class="modal-body">
+                        TES
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <script src="<?=base_url('assets/lte/jquery/jquery-2.1.3.min.js')?>"></script>
     <script src="<?=base_url('assets/lte/jquery/jquery-ui.js')?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables/jquery.dataTables.min.js');?>"></script>
-    <!-- jQuery -->
     <script src="<?=base_url('assets/lte/plugins/datatables/dataTables.jqueryui.min.js')?>"></script>
     <script src="<?=base_url('assets/lte/plugins/papaparse/papaparse.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-editor/js/dataTables.editor.min.js?id='.time());?>">
@@ -470,14 +373,12 @@
     <script src="<?=base_url('assets/lte/plugins/moment/moment.min.js');?>"></script>
 
     <script src="<?=base_url('assets/lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js');?>"></script>
-    <!-- Bootstrap 4 -->
     <script src="<?=base_url('assets/lte/plugins/bootstrap/js/bootstrap.bundle.min.js');?>"></script>
-    <!-- DataTables -->
     <script src="<?=base_url('assets/lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-responsive/js/dataTables.responsive.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/SearchBuilder-1.3.0/js/dataTables.searchBuilder.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/DateTime/js/dataTables.dateTime.min.js');?>"></script>
-    <script src="<?=base_url('assets/lte/sweetalert/sweetalert.js')?>"></script>
+    <script src="<?=site_url('assets/lte/sweetalert/sweetalert.js')?>"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -491,11 +392,10 @@
         $('#content').css('height', tinggi);
         $("#loading").fadeOut("slow");
 
+        // Memuat data awal: tag, produk, dan cart (Perbaikan Fungsi ADD)
         tag();
         search();
-
-
-
+        loadCart();
     });
 
     $(function() {
@@ -526,8 +426,8 @@
                         console.log(res.success)
                         $("#modalxl").modal('hide');
 
-                        location.reload();
-                        getAmount()
+                        reloadPage();
+
                         $("#sku-status").text('');
                     } else {
 
@@ -626,7 +526,47 @@
             }
         });
     }
-    // search()
+
+    // FUNGSI-FUNGSI PENTING UNTUK MEMPERBARUI KERANJANG
+    function getAmount() {
+        var cartid = $('#cartid').val();
+        $.ajax({
+            url: "<?= base_url('cart/get_amount?api=' . $this->id_t); ?>",
+            method: "POST",
+            data: {
+                cartid: cartid,
+            },
+            success: function(data) {
+                $('#amount').val(data);
+                $('#amount-display').text(new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR"
+                }).format(data));
+            }
+        });
+    }
+
+    function loadCart() {
+        var cartid = $('#cartid').val();
+        $.ajax({
+            url: "<?= base_url('cart/show_cart?api=' . $this->id_t); ?>",
+            method: "POST",
+            data: {
+                cartid: cartid,
+            },
+            success: function(data) {
+                $('#detail_cart').html(data);
+                getAmount()
+            }
+        });
+    }
+
+    function reloadPage() {
+        loadCart();
+        // Bersihkan SKU setelah item ditambahkan
+        $("#input_sku").val('').focus();
+    }
+    // AKHIR FUNGSI-FUNGSI PENTING
 
 
     function editDetail(id) {
@@ -732,27 +672,57 @@
             dataType: 'html',
             success: function(res) {
                 if (res) {
+                    // Jika tag dimuat melalui AJAX, Anda mungkin perlu memastikan styling diterapkan di sini
                     $('#tag-container').html(res);
+                } else {
+                    // Jika tidak dimuat via AJAX, gunakan hardcoded tags yang sudah di-style
+                    $('#tag-container').html(`
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #4a82ff; color: white; border-radius: 8px;">ALAT MANDI</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #4a82ff; color: white; border-radius: 8px;">MINUMAN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PEMBALUT</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PET FOOD</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">ROKOK</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SABUN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SEMBAKO</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SPAREPART</span>
+                    `);
                 }
             },
             error: function(error) {
-                $('#tag-container').html(error);
+                 // Fallback to hardcoded tags if AJAX fails
+                 $('#tag-container').html(`
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #4a82ff; color: white; border-radius: 8px;">ALAT MANDI</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #4a82ff; color: white; border-radius: 8px;">MINUMAN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PEMBALUT</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PET FOOD</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">ROKOK</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SABUN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SEMBAKO</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SPAREPART</span>
+                    `);
             }
         });
     }
-    // tag()
 
     function getMoneyChange() {
-        var cash = $('#cash').val();
-        var amount = $('#amount').val();
-        var change = cash - parseFloat(amount);
-
-        console.log(change)
-        $('#change').text(new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR"
-        }).format(change));
+        var cartid = $('#cartid').val(); // Pastikan variabel ini didefinisikan
+        $.ajax({
+            url: "<?= base_url('cart/get_amount?api=' . $this->id_t); ?>",
+            method: "POST",
+            data: {
+                cartid: cartid,
+            },
+            success: function(data) {
+                $('#amount').val(data);
+                // Memastikan amount-display ter-update dengan format Rupiah
+                $('#amount-display').text(new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR"
+                }).format(data));
+            }
+        });
     }
+
 
     function printReceipt() {
 
