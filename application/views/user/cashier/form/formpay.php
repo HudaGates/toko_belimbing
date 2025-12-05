@@ -62,42 +62,83 @@
     </div>
 </div>
 <script>
+function getMoneyChange() {
+    // Ambil nilai Jumlah Tagihan (diasumsikan sudah diisi di #amount)
+    var amount = parseFloat($("#amount").val()); 
+    
+    // Ambil nilai Uang Tunai yang diinput
+    var cash = parseFloat($("#cash").val()); 
+
+    // Cek jika cash bukan angka yang valid, atur kembalian ke 0
+    if (isNaN(cash) || cash === 0) {
+        $("#change-data").val(0);
+        return; 
+    }
+    
+    // Cek jika amount bukan angka yang valid (seharusnya tidak terjadi karena readonly)
+    if (isNaN(amount)) {
+        amount = 0;
+    }
+
+    // Hitung Kembalian
+    var change = cash - amount;
+
+    // Tampilkan hasil. Hanya tampilkan kembalian jika hasilnya positif atau nol.
+    if (change >= 0) {
+        // toFixed(0) digunakan untuk memastikan tidak ada angka di belakang koma (Rp 1000,00)
+        $("#change-data").val(change.toFixed(0)); 
+    } else {
+        // Jika uang tunai kurang, atur kembalian ke 0 atau tampilkan nilai negatif
+        // Disarankan 0 agar pengguna tahu pembayaran belum cukup.
+        $("#change-data").val(change.toFixed(0)); 
+    }
+}
+
+
 function paySubmit() {
     var cartid = $("#cartid").val();
     var customer_name = $("#customer_name").val();
     var amount = $("#amount").val();
     var pay_amount = $("#cash").val();
+    // Ambil nilai kembalian untuk pengecekan
+    var change = parseFloat($("#change-data").val()); 
 
 
-    if (!parseInt(amount)) {
+    if (!parseInt(pay_amount)) {
         alert(`Tidak boleh kosong (Uang Tunai)`);
-    } else {
-
-        $.ajax({
-            type: "POST",
-            url: "<?=base_url('cashier/paysubmit?api='.$this->id_t); ?>",
-            data: "cartid=" + cartid + "&customer_name=" + customer_name + "&amount=" + amount +
-                "&pay_amount=" + pay_amount +
-                "&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
-            cache: false,
-            dataType: 'json',
-            success: function(res) {
-                if (res.success == true) {
-                    console.log(res.success)
-                    printReceiptForm()
-                    $("#modalxl").modal('hide');
-                    window.location.href = "<?=base_url('cashier?api='.$this->id_t); ?>";
-
-
-                }
-            },
-            error: function(error) {
-                // $("#modalxl").modal('show');
-                console.log(error)
-            }
-        });
+        return; // Hentikan proses jika Uang Tunai kosong
+    } 
+    
+    // Tambahkan validasi sederhana agar uang tunai cukup untuk membayar
+    if (change < 0) {
+        alert(`Uang tunai kurang! (Kurang: ${Math.abs(change)})`);
+        return; // Hentikan proses jika pembayaran kurang
     }
+    
+    // Lanjutkan dengan AJAX jika semua validasi terpenuhi
+    $.ajax({
+        type: "POST",
+        url: "<?=base_url('cashier/paysubmit?api='.$this->id_t); ?>",
+        data: "cartid=" + cartid + "&customer_name=" + customer_name + "&amount=" + amount +
+            "&pay_amount=" + pay_amount +
+            "&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
+        cache: false,
+        dataType: 'json',
+        success: function(res) {
+            if (res.success == true) {
+                console.log(res.success)
+                printReceiptForm()
+                $("#modalxl").modal('hide');
+                window.location.href = "<?=base_url('cashier?api='.$this->id_t); ?>";
 
+
+            }
+        },
+        error: function(error) {
+            // $("#modalxl").modal('show');
+            console.log(error)
+        }
+    });
 }
 
 function cancel() {

@@ -8,7 +8,7 @@
                        ?>
     <div class="col-auto">
         <button onclick="tagsearch('<?=$key->category_id;?>')" class="btn btn-sm w-100 font-sm"
-            style="font-weight: bold; color:#171718; background-color: #32D74B"><?=strtoupper($key->category_id);?></button>
+            style="font-weight: bold; color:white; background-color: #007bff"><?=strtoupper($key->category_id);?></button>
 
     </div>
     <?php }}else{
