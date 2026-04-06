@@ -38,9 +38,6 @@
         color: #666;
     }
 
-    /* Logout button hover */
-    /* ... CSS yang sudah ada di atas ... */
-
 /* --- CSS KUSTOM UNTUK MODAL LOGOUT (SweetAlert) --- */
 
 /* Ikon Logout Hijau */
@@ -210,7 +207,6 @@
         border: 1px solid #f2f2f2 !important;
     }
 
-
     /* Styling Lainnya dari kode Anda */
     #product-container {
         background: #ffffff;
@@ -295,7 +291,8 @@
         <div class="row flex-grow-1 mt-2">
             <div class="col-md-4 d-flex flex-column">
                 <div class="cart-panel">
-                    <input id="cartid" type="hidden" value="<?=$qhc->id?>">
+                    <!-- FIX: Menggunakan isset() untuk mencegah error properti null -->
+                    <input id="cartid" type="hidden" value="<?=isset($qhc->id) ? $qhc->id : ''?>">
 
                     <table class="table table-sm cart-table mb-2">
                         <thead class="cart-header">
@@ -308,12 +305,12 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="bg-warning fw-bold"><?=$qhc->id?></td>
-                                <td class="bg-success text-white fw-bold"><?=strtoupper($qhc->status)?></td>
-                                <td class="bg-success text-white fw-bold"><?=strtoupper($qhc->cart_source)?></td>
-                                <td onclick="<?=$qhc->status == 'done'?'':'clearCart()'?>"
+                                <td class="bg-warning fw-bold"><?=isset($qhc->id) ? $qhc->id : '-'?></td>
+                                <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->status) ? $qhc->status : 'NULL')?></td>
+                                <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->cart_source) ? $qhc->cart_source : 'NULL')?></td>
+                                <td onclick="<?=isset($qhc->status) && $qhc->status == 'done' ? '' : 'clearCart()'?>"
                                     class="bg-danger text-white text-center fw-bold" style="cursor:pointer;">
-                                    <?=$qhc->status == 'done'?'DONE':'CLEAR'?>
+                                    <?=isset($qhc->status) && $qhc->status == 'done' ? 'DONE' : 'CLEAR'?>
                                 </td>
                             </tr>
                         </tbody>
@@ -322,7 +319,7 @@
                     <div class="mb-2">
                         <label class="small fw-bold">Customer</label>
                         <input id="customer_name" name="customer_name" class="form-control form-control-sm"
-                            value="<?=$qhc->customer_name?>">
+                            value="<?=isset($qhc->customer_name) ? $qhc->customer_name : ''?>">
                     </div>
 
                     <div id="detail_cart" class="flex-grow-1"></div>
@@ -339,10 +336,10 @@
 
                     <div class="mt-3 d-flex gap-2">
                         <button onclick="closeOpenCart()" type="button"
-                            class="btn btn-danger btn-modern w-50 <?=$qhc->status == 'done'?'':'d-none'?>">Close</button>
+                            class="btn btn-danger btn-modern w-50 <?=isset($qhc->status) && $qhc->status == 'done' ? '' : 'd-none'?>">Close</button>
                         
                         <button onclick="pay()" class="btn btn-primary w-100 btn-pay-custom"
-                            <?=$qhc->status == 'done'?'disabled':''?>>BAYAR</button>
+                            <?=isset($qhc->status) && $qhc->status == 'done' ? 'disabled' : ''?>>BAYAR</button>
                     </div>
 
                     <div class="customer-history-box mt-3">
@@ -430,13 +427,15 @@
                 </div>
             </div>
         </div>
-    </div> <script src="<?=base_url('assets/lte/jquery/jquery-2.1.3.min.js')?>"></script>
+
+    </div> 
+    
+    <script src="<?=base_url('assets/lte/jquery/jquery-2.1.3.min.js')?>"></script>
     <script src="<?=base_url('assets/lte/jquery/jquery-ui.js')?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables/jquery.dataTables.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables/dataTables.jqueryui.min.js')?>"></script>
     <script src="<?=base_url('assets/lte/plugins/papaparse/papaparse.min.js');?>"></script>
-    <script src="<?=base_url('assets/lte/plugins/datatables-editor/js/dataTables.editor.min.js?id='.time());?>">
-    </script>
+    <script src="<?=base_url('assets/lte/plugins/datatables-editor/js/dataTables.editor.min.js?id='.time());?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-editor/js/editor.bootstrap4.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-select/js/dataTables.select.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-buttons/js/dataTables.buttons.min.js');?>"></script>
@@ -446,7 +445,6 @@
     <script src="<?=base_url('assets/lte/plugins/datatables-buttons/js/buttons.html5.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-buttons/js/buttons.print.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/moment/moment.min.js');?>"></script>
-
     <script src="<?=base_url('assets/lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/bootstrap/js/bootstrap.bundle.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js');?>"></script>
@@ -469,8 +467,12 @@
 
         // Memuat data awal: tag, produk, dan cart (Perbaikan Fungsi ADD)
         tag();
-        search();
-        loadCart();
+        search('');
+        
+        // PENTING: Hanya load cart jika cartid tersedia
+        if(cartid && cartid !== '') {
+            loadCart();
+        }
     });
 
     $(function() {
@@ -484,10 +486,15 @@
     });
 
 
-
     $("#input_sku").on('keyup', function(e) {
         if (e.key === 'Enter' || e.keyCode === 13) {
-            // Do something
+            
+            // Validasi: Jika tidak ada ID keranjang, jangan teruskan proses tambah
+            if(!cartid || cartid === '') {
+                swal("Peringatan", "Data Keranjang Tidak Ditemukan! Silakan Logout lalu Login kembali.", "warning");
+                return;
+            }
+
             let sku = $("#input_sku").val().trim();
             $.ajax({
                 type: "POST",
@@ -515,8 +522,6 @@
             });
         }
     });
-
-
 
     $(window).resize(function() {
         var tinggi = ($(window).height() - 130);
@@ -611,6 +616,8 @@
     // FUNGSI-FUNGSI PENTING UNTUK MEMPERBARUI KERANJANG
     function getAmount() {
         var cartid = $('#cartid').val();
+        if(!cartid || cartid === '') return; // Mencegah error AJAX jika null
+
         $.ajax({
             url: "<?= base_url('cart/get_amount?api=' . $this->id_t); ?>",
             method: "POST",
@@ -629,6 +636,8 @@
 
     function loadCart() {
         var cartid = $('#cartid').val();
+        if(!cartid || cartid === '') return; // Mencegah error AJAX jika null
+
         $.ajax({
             url: "<?= base_url('cart/show_cart?api=' . $this->id_t); ?>",
             method: "POST",
@@ -674,6 +683,12 @@
     function pay() {
         var customer_name = $('#customer_name').val();
         var cartid = $('#cartid').val();
+        
+        if(!cartid || cartid === '') {
+            swal("Peringatan", "Keranjang tidak valid!", "warning");
+            return;
+        }
+
         var amount = $('#amount').val();
         $.ajax({
             type: "POST",
@@ -697,6 +712,8 @@
 
     function clearCart() {
         var cartid = $('#cartid').val();
+        if(!cartid || cartid === '') return;
+
         $.ajax({
             type: "POST",
             url: "<?=base_url('cashier/clearcart?api='.$this->id_t); ?>",
@@ -785,44 +802,19 @@
         });
     }
 
-    function getMoneyChange() {
-        var cartid = $('#cartid').val(); // Pastikan variabel ini didefinisikan
-        $.ajax({
-            url: "<?= base_url('cart/get_amount?api=' . $this->id_t); ?>",
-            method: "POST",
-            data: {
-                cartid: cartid,
-            },
-            success: function(data) {
-                $('#amount').val(data);
-                // Memastikan amount-display ter-update dengan format Rupiah
-                $('#amount-display').text(new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR"
-                }).format(data));
-            }
-        });
-    }
-
-
     function printReceipt() {
-
         var cartid = $('#cartid').val();
         window.open("<?=base_url('cashier/print_receipt');?>?cartid=" + cartid + "&api=<?=$this->id_t;?>", "_blank");
-
     }
 
     function historysale() {
         $.ajax({
             type: "GET",
             url: "<?=base_url('cashier/historysale?api='.$this->id_t); ?>",
-            // data: "cartid=" + cartid + "&amount=" + amount + "&customer_name=" + customer_name +"&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
             cache: false,
             dataType: 'html',
             contentType: 'html',
             success: function(res) {
-
-
                 $('#modalcontentlg').html(res);
                 $("#modallg").modal('show');
             },
@@ -836,13 +828,10 @@
         $.ajax({
             type: "GET",
             url: "<?=base_url('cashier/historysaleist?api='.$this->id_t); ?>",
-            // data: "cartid=" + cartid + "&amount=" + amount + "&customer_name=" + customer_name +"&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
             cache: false,
             dataType: 'html',
             contentType: 'html',
             success: function(res) {
-
-
                 $('#modalcontentlg').html(res);
                 $("#modallg").modal('show');
             },
@@ -854,6 +843,8 @@
 
     function skipcart() {
         var cartid = $('#cartid').val();
+        if(!cartid || cartid === '') return;
+
         $.ajax({
             type: "POST",
             url: "<?=base_url('cashier/skipcart?api='.$this->id_t); ?>",
@@ -865,7 +856,6 @@
                     window.location.href = "<?=base_url('cashier?api='.$this->id_t); ?>";
                     getAmount()
                 } else {
-
                     $("#sku-status").text(res.message);
                 }
             },
@@ -879,13 +869,10 @@
         $.ajax({
             type: "GET",
             url: "<?=base_url('cashier/formcustomer?api='.$this->id_t); ?>",
-            // data: "cartid=" + cartid + "&amount=" + amount + "&customer_name=" + customer_name +"&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
             cache: false,
             dataType: 'html',
             contentType: 'html',
             success: function(res) {
-
-
                 $('#modalcontentlg').html(res);
                 $("#modallg").modal('show');
             },
@@ -896,21 +883,15 @@
     }
 
     function truncate() {
-        // var cartid = $('#cartid').val();
         $.ajax({
             type: "GET",
             url: "<?=base_url('cashier/truncate?api='.$this->id_t); ?>",
-            // data: "cartid=" + cartid + "&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
             cache: false,
             dataType: 'json',
             success: function(res) {
                 if (res.success == true) {
-
-                    // location.reload();
                     window.location.href = "<?=base_url('cashier?api='.$this->id_t); ?>";
-
                 } else {
-
                     $("#sku-status").text(res.message);
                 }
             },

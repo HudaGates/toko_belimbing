@@ -9,8 +9,6 @@
 <div class="row">
     <div class="col">
 
-        <!-- <p><?= $qd->product_code?> </p> -->
-
         <br>
 
         <table class="table">
@@ -18,79 +16,82 @@
                 <tr>
                     <td class="text-muted text-right text-sm">Cart ID</td>
                     <td class="font-weight-bold  text-left">
-                        <input type="text" id="cartid" value="<?=$cartid?>" readonly>
+                        <input class="form-control form-control-sm" type="text" id="cartid" value="<?=$cartid?>" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td class="text-muted text-right text-sm">Customer</td>
                     <td class="font-weight-bold  text-left">
-                        <input type="text" id="customer_name" value="<?=$customer_name?>" readonly>
+                        <input class="form-control form-control-sm" type="text" id="customer_name" value="<?=$customer_name?>">
                     </td>
                 </tr>
                 <tr>
                     <td class="text-muted text-right text-sm">Jumlah Tagihan</td>
                     <td class="font-weight-bold  text-left">
-                        <input type="number" id="amount" value="<?=$amount?>" readonly>
+                        <input class="form-control form-control-sm font-weight-bold" type="number" id="amount" value="<?=$amount?>" readonly style="background-color: #ffeeba; color: #d39e00;">
                     </td>
                 </tr>
                 <tr>
                     <td class="text-muted text-right text-sm">Uang Tunai</td>
                     <td class="font-weight-bold  text-left">
-                        <input oninput="getMoneyChange()" id="cash" type="number">
+                        <input class="form-control form-control-sm" oninput="getMoneyChange()" id="cash" type="number" autofocus>
                     </td>
                 </tr>
                 <tr>
                     <td class="text-muted text-right text-sm">Kembalian</td>
                     <td id="change" class="font-weight-bold  text-left">
-                        <input id="change-data" type="number">
+                        <input class="form-control form-control-sm font-weight-bold text-success" id="change-data-display" type="text" readonly>
+                        <input id="change-data" type="hidden" value="0">
                     </td>
                 </tr>
-
-
             </tbody>
         </table>
-
-
 
     </div>
 </div>
 <div class="row">
     <div class="col">
-        <button type="button" class="btn btn-outline-danger btn-sm" onclick="">BATAL</button>
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="cancel()">BATAL</button>
         <button type="button" class="btn btn-primary btn-sm" onclick="paySubmit()">BAYAR</button>
-
     </div>
 </div>
+
 <script>
+// Trik agar autofocus bekerja sempurna di dalam Modal Bootstrap
+$(document).ready(function() {
+    $('#modalxl').on('shown.bs.modal', function () {
+        $('#cash').focus();
+    });
+});
+
 function getMoneyChange() {
-    // Ambil nilai Jumlah Tagihan (diasumsikan sudah diisi di #amount)
     var amount = parseFloat($("#amount").val()); 
-    
-    // Ambil nilai Uang Tunai yang diinput
     var cash = parseFloat($("#cash").val()); 
 
-    // Cek jika cash bukan angka yang valid, atur kembalian ke 0
     if (isNaN(cash) || cash === 0) {
         $("#change-data").val(0);
+        $("#change-data-display").val("Rp 0");
         return; 
     }
     
-    // Cek jika amount bukan angka yang valid (seharusnya tidak terjadi karena readonly)
     if (isNaN(amount)) {
         amount = 0;
     }
 
-    // Hitung Kembalian
     var change = cash - amount;
 
-    // Tampilkan hasil. Hanya tampilkan kembalian jika hasilnya positif atau nol.
-    if (change >= 0) {
-        // toFixed(0) digunakan untuk memastikan tidak ada angka di belakang koma (Rp 1000,00)
-        $("#change-data").val(change.toFixed(0)); 
+    // Simpan nilai asli ke input hidden
+    $("#change-data").val(change.toFixed(0)); 
+    
+    // Tampilkan format Rupiah ke input display
+    var formatRupiah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(change);
+    $("#change-data-display").val(formatRupiah);
+    
+    // Beri warna merah jika uangnya kurang
+    if (change < 0) {
+        $("#change-data-display").removeClass('text-success').addClass('text-danger');
     } else {
-        // Jika uang tunai kurang, atur kembalian ke 0 atau tampilkan nilai negatif
-        // Disarankan 0 agar pengguna tahu pembayaran belum cukup.
-        $("#change-data").val(change.toFixed(0)); 
+        $("#change-data-display").removeClass('text-danger').addClass('text-success');
     }
 }
 
@@ -100,22 +101,22 @@ function paySubmit() {
     var customer_name = $("#customer_name").val();
     var amount = $("#amount").val();
     var pay_amount = $("#cash").val();
-    // Ambil nilai kembalian untuk pengecekan
     var change = parseFloat($("#change-data").val()); 
 
-
     if (!parseInt(pay_amount)) {
-        alert(`Tidak boleh kosong (Uang Tunai)`);
-        return; // Hentikan proses jika Uang Tunai kosong
+        // Ganti alert bawaan dengan SweetAlert agar lebih elegan
+        swal("Peringatan!", "Uang Tunai tidak boleh kosong!", "warning");
+        return; 
     } 
     
-    // Tambahkan validasi sederhana agar uang tunai cukup untuk membayar
     if (change < 0) {
-        alert(`Uang tunai kurang! (Kurang: ${Math.abs(change)})`);
-        return; // Hentikan proses jika pembayaran kurang
+        swal("Pembayaran Kurang!", "Uang tunai kurang " + new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(Math.abs(change)), "error");
+        return; 
     }
     
-    // Lanjutkan dengan AJAX jika semua validasi terpenuhi
+    // Disable tombol Bayar saat proses untuk mencegah klik ganda (Double Submit)
+    $('.btn-primary').prop('disabled', true).text('Memproses...');
+    
     $.ajax({
         type: "POST",
         url: "<?=base_url('cashier/paysubmit?api='.$this->id_t); ?>",
@@ -126,17 +127,21 @@ function paySubmit() {
         dataType: 'json',
         success: function(res) {
             if (res.success == true) {
-                console.log(res.success)
-                printReceiptForm()
+                printReceiptForm();
                 $("#modalxl").modal('hide');
-                window.location.href = "<?=base_url('cashier?api='.$this->id_t); ?>";
-
-
+                // Beri jeda sedikit agar struk punya waktu ter-*generate* sebelum reload halaman
+                setTimeout(function() {
+                    window.location.href = "<?=base_url('cashier?api='.$this->id_t); ?>";
+                }, 500);
+            } else {
+                swal("Gagal!", "Terjadi kesalahan saat memproses pembayaran.", "error");
+                $('.btn-primary').prop('disabled', false).text('BAYAR');
             }
         },
         error: function(error) {
-            // $("#modalxl").modal('show');
-            console.log(error)
+            console.log(error);
+            swal("Error Server!", "Tidak dapat terhubung ke server.", "error");
+            $('.btn-primary').prop('disabled', false).text('BAYAR');
         }
     });
 }
@@ -146,9 +151,7 @@ function cancel() {
 }
 
 function printReceiptForm() {
-
     var cartid = $('#cartid').val();
     window.open("<?=base_url('cashier/print_receipt');?>?cartid=" + cartid + "&api=<?=$this->id_t;?>", "_blank");
-
 }
 </script>
