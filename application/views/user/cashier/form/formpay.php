@@ -22,7 +22,7 @@
                 <tr>
                     <td class="text-muted text-right text-sm">Customer</td>
                     <td class="font-weight-bold  text-left">
-                        <input class="form-control form-control-sm" type="text" id="customer_name" value="<?=$customer_name?>">
+                        <input class="form-control form-control-sm" type="text" id="modal_customer_name" value="<?=$customer_name?>">
                     </td>
                 </tr>
                 <tr>
@@ -98,7 +98,10 @@ function getMoneyChange() {
 
 function paySubmit() {
     var cartid = $("#cartid").val();
-    var customer_name = $("#customer_name").val();
+    
+    // PERBAIKAN 2: Mengambil value dari ID modal_customer_name yang baru
+    var customer_name = $("#modal_customer_name").val(); 
+    
     var amount = $("#amount").val();
     var pay_amount = $("#cash").val();
     var change = parseFloat($("#change-data").val()); 
