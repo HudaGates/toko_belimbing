@@ -10,6 +10,62 @@
     <link rel="stylesheet" href="<?=base_url('assets/lte/dist/css/adminlte.min.css');?>">
     <link rel="stylesheet" href="<?=site_url('assets/lte/sweetalert/sweetalert.css');?>" />
     <style>
+    /* ==========================================
+       PERBAIKAN KARTU PRODUK (REVISI SEJAJAR)
+       ========================================== */
+    
+    /* 1. Bikin tinggi semua kotak putih (produk) seragam */
+    #product-container > .row > div > div,
+    #product-container .card,
+    #product-container .bg-white {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+    }
+
+    /* 2. Dorong area QTY (- 1 +) ke paling bawah! 
+          Ini kunci biar qty & tombol tambah rata sejajar semua */
+    #product-container .card:has(.btn-light),
+    #product-container .bg-white:has(.btn-light) {
+        /* Opsional: kalau mau nargetin container utama */
+    }
+    #product-container *:has(> .btn-light),
+    #product-container .row:has(.btn-light) {
+        margin-top: auto !important; 
+        padding-bottom: 5px !important;
+    }
+
+    /* 3. Tombol Tambah (Full Width & Ukuran Seragam) */
+    #product-container .btn-primary {
+        width: 100% !important; 
+        height: 38px !important; 
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-weight: bold !important;
+        border-radius: 6px !important;
+        margin-top: 0 !important; /* Hapus auto dari sini */
+    }
+    
+    /* Rapihkan sedikit tombol + dan - */
+    #product-container .btn-light {
+        height: 30px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /* ========================================== */
+    /* SKALA ZOOM OTOMATIS BOOTSTRAP */
+    html {
+        /* Ukuran standar adalah 16px. Kita ubah jadi 12px (Setara dengan Zoom 75%) */
+        font-size: 12px !important; 
+    }
+
+    /* Kunci Gambar Produk agar tidak raksasa */
+    #product-container img {
+        max-height: 80px !important;
+        object-fit: contain;
+    }
     /* Styling dasar dari sebelumnya */
     body {
         background-color: #f6f7fb;
