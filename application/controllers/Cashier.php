@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Cashier extends CI_Controller{
+class Cashier extends MY_Controller{
   public $shift;
   public $prod_date;
   public $user_level;
@@ -15,9 +15,18 @@ class Cashier extends CI_Controller{
   
     function __construct(){
         parent::__construct();
+        
+        // ==========================================
+        // SUNTIKAN BAHASA UNTUK CONTROLLER CASHIER
+        // ==========================================
+        $bahasa = $this->session->userdata('site_lang') ? $this->session->userdata('site_lang') : 'indonesian';
+        $this->lang->load('toko', $bahasa);
+        // ==========================================
+
         $this->load->model('s_model');
         $this->id_t=$this->input->get('api');
         $query=$this->s_model->s_access($this->id_t)->row(); 
+        
         if($query && $query->user_level=='Cashier'){            
           $this->nama=$query->nama;
           $this->user_level=$query->user_level;
@@ -139,79 +148,60 @@ function print_receipt(){
 }
 
 function additem(){
-  $cartid=$this->input->post('cartid');
-  $product_code= trim($this->input->post('sku'));
-  
-  $qmp = $this->db->get_where('tbl_master_product', array('product_code' => $product_code))->row();
-  $cd = $this->db->get_where('tbl_history_sale_detail', array('sale_id' =>$cartid, 'product_code' =>$product_code))->row();
-  $qtc=$this->db->query("SELECT SUM(quantity) AS qty from tbl_history_sale_detail where product_code= '". $product_code . "' AND sale_id=". $cartid . " ")->row();
-    $qts = $this->db->get_where('tbl_history_sale', array('id' => $cartid))->row();
-    
-    if($qts->status=='done'){
-      $data = array(
-        'success' => false,
-        'message' => 'TRANSAKSI TELAH SELESAI',
-      );
-      echo json_encode($data);
-    }
-  else if(empty($qmp)){
-    $data = array(
-      'success' => false,
-      'message' => 'SKU NOT FOUND',
-    );
-    echo json_encode($data);
-  }else if($qtc->qty >= $qmp->stock){
-    $data = array(
-      'success' => false,
-      'message' => 'STOCK TIDAK CUKUP',
-    );
-    echo json_encode($data);
-  }else if($qmp->stock <= 0){
-    $data = array(
-      'success' => false,
-      'message' => 'STOCK HABIS',
-    ); 
-    echo json_encode($data);
-  }
-  else{
-    if(!empty($cd)){
-      $qty= intval($cd->quantity) + 1;
-      $stbc = 1* floatval($qmp->price);
-      $st = intval($cd->sub_total) + $stbc;
-      
-      $data = array(
-        'quantity' => $qty,
-        'sub_total' => $st,
-        'update_by' => $this->nama,
-        'update_time' => gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7),
-      );
-      $qd = $this->db->update('tbl_history_sale_detail',  $data, array('id'=> $cd->id, ));
-    }else{
-      $data = array(
-        'sale_id' => $cartid,
-        'product_code' => $qmp->product_code,
-        'product_name' =>  $qmp->product_name,
-        'unit_price' => $qmp->price,
-        'quantity' => 1,
-        'sub_total' =>  $qmp->price,
-        'update_by' => $this->nama,
-        'update_time' => gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7),
-      );
-      $qd = $this->db->insert('tbl_history_sale_detail', $data);
-    }
+    $cartid = $this->input->post('cartid');
+    $product_code = trim($this->input->post('sku'));
+    $quantity_add = $this->input->post('quantity') ? intval($this->input->post('quantity')) : 1;
 
-    if($qd){
-      $data = array(
-        'success' => true
-      );
+    $qmp = $this->db->query("SELECT product_code, product_name, price, discount, SUM(stock) as stock FROM tbl_master_product WHERE product_code = '".$this->db->escape_str($product_code)."' GROUP BY product_code")->row();
+    
+    $cd = $this->db->get_where('tbl_history_sale_detail', array('sale_id' => $cartid, 'product_code' => $product_code))->row();
+    
+    $qtc = $this->db->query("SELECT SUM(quantity) AS qty from tbl_history_sale_detail where product_code= '".$this->db->escape_str($product_code)."' AND sale_id=". intval($cartid))->row();
+    $current_qty = empty($qtc->qty) ? 0 : intval($qtc->qty);
+
+    $qts = $this->db->get_where('tbl_history_sale', array('id' => $cartid))->row();
+
+    if(empty($qts) || $qts->status == 'done'){
+        echo json_encode(array('success' => false, 'message' => 'TRANSAKSI TELAH SELESAI'));
+    } else if(empty($qmp)){
+        echo json_encode(array('success' => false, 'message' => 'SKU NOT FOUND'));
+    } else if($qmp->stock <= 0){
+        echo json_encode(array('success' => false, 'message' => 'STOCK HABIS')); 
+    } else if(($current_qty + $quantity_add) > $qmp->stock){
+        echo json_encode(array('success' => false, 'message' => 'STOCK TIDAK CUKUP (Sisa: '.($qmp->stock - $current_qty).')'));
     } else {
-      $data = array(
-        'success' => false
-      );
+        
+        $persen_diskon = empty($qmp->discount) ? 0 : floatval($qmp->discount);
+        $potongan_rupiah = (floatval($qmp->price) * $persen_diskon) / 100;
+        $harga_akhir = floatval($qmp->price) - $potongan_rupiah;
+
+        if(!empty($cd)){
+            $qty = intval($cd->quantity) + $quantity_add;
+            $stbc = $quantity_add * $harga_akhir; 
+            $st = intval($cd->sub_total) + $stbc;
+            
+            $data = array(
+                'quantity' => $qty,
+                'sub_total' => $st,
+                'update_by' => $this->nama,
+                'update_time' => gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7),
+            );
+            $this->db->update('tbl_history_sale_detail',  $data, array('id'=> $cd->id));
+        } else {
+            $data = array(
+                'sale_id' => $cartid,
+                'product_code' => $qmp->product_code,
+                'product_name' => $qmp->product_name,
+                'unit_price' => $harga_akhir, 
+                'quantity' => $quantity_add,
+                'sub_total' => ($harga_akhir * $quantity_add), 
+                'update_by' => $this->nama,
+                'update_time' => gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7),
+            );
+            $this->db->insert('tbl_history_sale_detail', $data);
+        }
+        echo json_encode(array('success' => true));
     }
-  
-    echo json_encode($data);
-  }
 }
 
 function formeditdetail(){
@@ -387,7 +377,7 @@ $qd = $this->db->update('tbl_history_sale',  $data, array('id'=> $cartid, ));
 }
 
 function historysale(){
-  $qhs=$this->db->query("SELECT * from tbl_history_sale where status='done'   ORDER BY id DESC ")->result();
+  $qhs=$this->db->query("SELECT * from tbl_history_sale where status='done'  ORDER BY id DESC ")->result();
   $qhsd=$this->db->query("SELECT * from tbl_history_sale where status='draft' AND cart_source!='cust' ORDER BY id DESC ")->result();
   $data = array(
     'qhs' => $qhs,

@@ -15,8 +15,10 @@ class SystemModel extends CI_Model
    
     //constructor which loads the CodeIgniter database class (not required)
     public function __construct()   {
-       // $this->load->database();
-    }    
+        parent::__construct();
+        // INI SAKLARNYA BANG! Nyalakan mesin pembuat password (sha1)
+        $this->load->library('sha1'); 
+    } 
     
     public function init($editorDb)
     {
