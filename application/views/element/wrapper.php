@@ -34,7 +34,7 @@
                     </tr>
                     <tr>
                         <td style=" font-size: 1.1rem; font-weight: bold; line-height: 10px;">
-                            <?= $this->nama; ;?>
+                            <?= isset($cu->nama) ? $cu->nama : 'Admin'; ?>
                         </td>
                     </tr>
                     <tr>

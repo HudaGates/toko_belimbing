@@ -12,7 +12,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?=$title;?> | Home</title>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet"
@@ -20,30 +19,22 @@
     <link rel="stylesheet" href="<?=base_url('assets/lte/plugins/datatables-select/css/select.bootstrap4.min.css');?>">
     <link rel="stylesheet" href="<?=base_url('assets/lte/jquery/themes/blitzer/jquery-ui.css');?>">
     <link rel="stylesheet" href="<?=base_url('assets/lte/jquery/dataTables.jqueryui.min.css');?>">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="<?=base_url('assets/lte/plugins/fontawesome-free/css/all.min.css');?>">
-    <!-- Ionicons -->
     <link rel="stylesheet" href="<?=base_url('assets/lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/lte/ionicons-2.0.1/css/ionicons.min.css');?>">
-    <!-- DataTables -->
     <link rel="stylesheet" href="<?=base_url('assets/lte/sweetalert/sweetalert.css') ?>" />
     <link rel="stylesheet"
         href="<?=base_url('assets/lte/plugins/SearchBuilder-1.3.0/css/searchBuilder.jqueryui.min.css');?>">
 
     <link rel="stylesheet" href="<?=base_url('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css');?>">
-    <!-- <link rel="stylesheet"
-        href="<?=base_url('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css');?>"> -->
     <link rel="stylesheet" href="<?=base_url('assets/lte/plugins/datatables-editor/css/editor.bootstrap4.min.css');?>">
-    <!-- Theme style -->
     <link rel="stylesheet" href="<?=base_url('assets/lte/plugins/DateTime/css/dataTables.dateTime.min.css');?>">
     <link rel="stylesheet" href="<?=base_url('assets/lte/dist/css/adminlte.min.css');?>">
     <link rel="shortcut icon" href="<?=$logo;?>" type="image/x-icon" />
     <link href="<?= base_url('assets/fonts/sfpro/stylesheet.css'); ?>" rel="stylesheet" type="text/css" />
-    <!-- Google Font: Source Sans Pro -->
     <style type="text/css">
     html,
     body {
-        /* font-size: 18px !important; */
         font-family: 'SF Pro Display', sans-serif !important;
         height: 100%;
         width: 100%;
@@ -117,7 +108,6 @@
     <script src="<?=base_url('assets/lte/jquery/jquery-2.1.3.min.js')?>"></script>
     <script src="<?=base_url('assets/lte/jquery/jquery-ui.js')?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables/jquery.dataTables.min.js');?>"></script>
-    <!-- jQuery -->
     <script src="<?=base_url('assets/lte/plugins/datatables/dataTables.jqueryui.min.js')?>"></script>
     <script src="<?=base_url('assets/lte/plugins/papaparse/papaparse.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-editor/js/dataTables.editor.min.js?id='.time());?>">
@@ -133,9 +123,7 @@
     <script src="<?=base_url('assets/lte/plugins/moment/moment.min.js');?>"></script>
 
     <script src="<?=base_url('assets/lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js');?>"></script>
-    <!-- Bootstrap 4 -->
     <script src="<?=base_url('assets/lte/plugins/bootstrap/js/bootstrap.bundle.min.js');?>"></script>
-    <!-- DataTables -->
     <script src="<?=base_url('assets/lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/datatables-responsive/js/dataTables.responsive.min.js');?>"></script>
     <script src="<?=base_url('assets/lte/plugins/SearchBuilder-1.3.0/js/dataTables.searchBuilder.min.js');?>"></script>
@@ -180,9 +168,8 @@
         </div>
     </div>
     <div class="wrapper">
-        <!-- Navbar -->
+        
         <nav class="main-header navbar navbar-expand navbar-dark navbar-<?=$thema;?> text-sm border-bottom-0">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -201,7 +188,6 @@
                 </li>
             </ul>
 
-            <!-- SEARCH FORM -->
             <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="Search"
@@ -214,9 +200,7 @@
                 </div>
             </form>
 
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Messages Dropdown Menu -->
                 <li class="nav-item">
                     <a class="nav-link brand-image img-circle elevation-1" data-widget="dropdown" href="#"
                         onclick="logout()" title="Logout">
@@ -232,11 +216,7 @@
                 </li>
             </ul>
         </nav>
-        <!-- /.navbar -->
-
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-<?=$thema;?> elevation-0">
-            <!-- Brand Logo -->
             <div class="brand-link navbar-<?=$thema;?> text-sm" style="padding: 4px">
                 <div class="row">
                     <div class="col-3">
@@ -252,16 +232,8 @@
 
 
             </div>
-            <!-- <a href="#" class="brand-link navbar-<?=$thema;?> text-sm">
-                <img src="<?=$logo;?>" class="brand-image img-circle elevation-2"
-                    style="opacity: .8;width: 50px !important; margin: 0 !important;">
-                <span class="brand-text font-weight-bold text-white" style="font-size: 1rem;">&nbsp;<?=$detail;?></span>
-                <p class="m-0" style="font-size: 0.5rem;"><?=$owner;?></p>
-            </a> -->
 
-            <!-- Sidebar -->
             <div class="sidebar" style="background-color: #222;">
-                <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         <img src="<?=$gambar;?>" class="img-circle elevation-0" alt="<?=$cu->nama; ?>">
@@ -273,12 +245,9 @@
                     </div>
                 </div>
 
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
                         <li class="nav-item has-treeview">
                             <a href="" class="nav-link"
                                 onclick="$('.nav-link.1').removeClass('active'); $(this).addClass('active');">
@@ -290,10 +259,22 @@
                         </li>
 
                         <?php
-        foreach ($menu_parent as $row1) { ?>
+                        // ==============================================================
+                        // JURUS FILTER MENU: Tulis nama menu yang mau disembunyikan di sini
+                        // ==============================================================
+                        $hidden_menus = [
+                            'Data Title', 'Data Group', 'Data Area', 'Data Level', 
+                            'Data Menu', 'Data IP Address', 'Data Pesan Andon', 'Master Rack'
+                        ];
+
+                        foreach ($menu_parent as $row1) { 
+                            // Cegat jika nama menu ada di daftar sembunyi
+                            if (in_array($row1->nav, $hidden_menus)) { continue; }
+                        ?>
+                        
                         <li class="nav-item has-treeview <?=$row1->parent;?>">
                             <?php if($row1->url!="-"){ 
-                if($row1->parent=='andon'){ ?>
+                                if($row1->parent=='andon'){ ?>
                             <a class="nav-link 1 <?=$row1->parent;?>"
                                 onclick="window.open ('<?=site_url($row1->url.'?api='.$this->id_t)?>','_blank');"></i>
                                 <i class="nav-icon fas <?=$row1->icon;?> text-bold"></i>
@@ -315,7 +296,11 @@
                                         <?php }?>
                                     </a>
                                     <ul class="nav nav-treeview <?=$row1->parent;?>">
-                                        <?php foreach ($menu_child as $row2) { if($row1->parent==$row2->parent) { 
+                                        <?php foreach ($menu_child as $row2) { 
+                                            // Cegat juga jika nama anak menu ada di daftar sembunyi
+                                            if (in_array($row2->nav, $hidden_menus)) { continue; }
+                                            
+                                            if($row1->parent==$row2->parent) { 
               if($row2->parent=='andon'){ ?>
                                         <li class="nav-item <?=$row2->child;?>">
                                             <a class="nav-link 2"
@@ -353,8 +338,6 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
+                </div>
+            </aside>
         <div class="content-wrapper" id="content" style="display: flex;flex-direction: column; background-color: #eee;">

@@ -144,7 +144,8 @@ $(document).ready(function() {
             url: "<?= base_url('Ajax/sData?table=' . $table . '&api=' . $this->id_t . '&menuid=' . $menuid); ?>",
             type: "POST",
             data: function(d) {
-                d.csrf_sysx_name = cv;
+                // INI DIA KUNCI AJAIBNYA (Dibuat otomatis ngikutin server)
+                d['<?= $this->security->get_csrf_token_name(); ?>'] = cv;
             }
 
         },

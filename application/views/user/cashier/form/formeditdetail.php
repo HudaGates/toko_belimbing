@@ -1,6 +1,6 @@
 <div class="row ">
     <div class="col-9 text-left">
-        <h4 class="font-weight-bold">Edit Item</h4>
+        <h4 class="font-weight-bold"><?= lang('modal_edit_title'); ?></h4>
     </div>
     <div class="col-3 text-right">
         <button type="button" class="btn btn-danger btn-sm" onclick="cancel()">X</button>
@@ -8,60 +8,48 @@
 </div>
 <div class="row">
     <div class="col">
-
-        <!-- <p><?= $qd->product_code?> </p> -->
-
         <br>
-
         <table class="table">
-            <!-- <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>QTY</th>
-                </tr>
-            </thead> -->
             <tbody>
                 <tr>
-                    <td class="text-muted text-right text-sm">Product Code</td>
+                    <td class="text-muted text-right text-sm"><?= lang('lbl_product_code'); ?></td>
                     <td class="font-weight-bold  text-left"><?= $qd->product_code?> </td>
                 </tr>
                 <tr>
-                    <td class="text-muted text-right text-sm">Product Name</td>
+                    <td class="text-muted text-right text-sm"><?= lang('lbl_product_name'); ?></td>
                     <td class="font-weight-bold  text-left"><?= $qd->product_name?></td>
                 </tr>
                 <tr>
-                    <td class="text-muted text-right text-sm">Unit Price</td>
+                    <td class="text-muted text-right text-sm"><?= lang('lbl_unit_price'); ?></td>
                     <td class="font-weight-bold  text-left">
-                        <!-- <?= $qd->unit_price?> -->
                         <?php echo 'Rp ' . number_format($qd->unit_price); ?>
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-muted text-right text-sm">QTY</td>
+                    <td class="text-muted text-right text-sm"><?= lang('lbl_qty_edit'); ?></td>
                     <td class="font-weight-bold text-left">
-                        <input type="number" id="qtyItem" value="<?= $qd->quantity?>" max="<?= $qmp->stock?>"> <br>
-                        <small class="text-muted">Tidak boleh lebih dari <?= $qmp->stock?> (stock)</small>
+                        <input type="number" id="qtyItem" class="form-control form-control-sm w-50" value="<?= $qd->quantity?>" max="<?= $qmp->stock?>"> 
+                        <small class="text-muted"><?= lang('msg_max_stock'); ?> <?= $qmp->stock?> <?= lang('lbl_stock'); ?></small>
                     </td>
                 </tr>
-
             </tbody>
         </table>
-
-
-
     </div>
 </div>
 <div class="row">
-    <div class="col">
-        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeItem()">DELETE</button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="save()">SAVE</button>
-
+    <div class="col text-right">
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeItem()"><?= lang('btn_delete'); ?></button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="save()"><?= lang('btn_save'); ?></button>
     </div>
 </div>
+
 <script>
 let itemID = '<?= $qd->id?>';
 let stockItem = '<?= $qmp->stock?>';
 
+// Meneruskan variabel bahasa ke Javascript
+let msgMaxStock = "<?= lang('msg_max_stock'); ?>";
+let lblStock = "<?= lang('lbl_stock'); ?>";
 
 function removeItem() {
     $.ajax({
@@ -72,26 +60,27 @@ function removeItem() {
         dataType: 'json',
         success: function(res) {
             if (res.success == true) {
-                console.log(res.success)
                 $("#modalxl").modal('hide');
-
                 location.reload();
-                getAmount()
             }
         },
         error: function(error) {
-            // $("#modalxl").modal('show');
-            console.log(error)
+            console.log(error);
         }
     });
 }
 
 function save() {
-    let qtyItem = $("#qtyItem").val();;
+    let qtyItem = $("#qtyItem").val();
+    
     if (parseInt(qtyItem) > parseInt(stockItem)) {
-        alert(`Tidak boleh lebih dari ${stockItem} (stock)`);
+        // Mengganti alert biasa dengan SweetAlert yang sudah mendukung multibahasa
+        if(typeof swal === 'function') {
+            swal("Warning", `${msgMaxStock} ${stockItem} ${lblStock}`, "warning");
+        } else {
+            alert(`${msgMaxStock} ${stockItem} ${lblStock}`);
+        }
     } else {
-
         $.ajax({
             type: "POST",
             url: "<?=base_url('cashier/edititem?api='.$this->id_t); ?>",
@@ -100,20 +89,15 @@ function save() {
             dataType: 'json',
             success: function(res) {
                 if (res.success == true) {
-                    console.log(res.success)
                     $("#modalxl").modal('hide');
-
                     location.reload();
-                    getAmount()
                 }
             },
             error: function(error) {
-                // $("#modalxl").modal('show');
-                console.log(error)
+                console.log(error);
             }
         });
     }
-
 }
 
 function cancel() {

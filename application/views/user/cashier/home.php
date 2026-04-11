@@ -277,12 +277,18 @@
                     <div class="cashier-info"><?=$qt->address?></div>
                 </div>
             </div>
+            
             <div class="d-flex align-items-center gap-3">
+                
+                <div class="btn-group btn-group-sm mr-2 shadow-sm">
+                    <a href="<?=base_url('language/switch_lang/indonesian')?>" class="btn <?= ($this->session->userdata('site_lang') == 'indonesian' || !$this->session->userdata('site_lang')) ? 'btn-primary font-weight-bold' : 'btn-light text-secondary' ?>" style="border-radius: 6px 0 0 6px;">ID</a>
+                    <a href="<?=base_url('language/switch_lang/english')?>" class="btn <?= ($this->session->userdata('site_lang') == 'english') ? 'btn-primary font-weight-bold' : 'btn-light text-secondary' ?>" style="border-radius: 0 6px 6px 0;">EN</a>
+                </div>
                 <div>
                     <div><strong>Cashier 1:</strong> <?=$nama?></div>
                     <div><?=date('l, d-m-Y');?> | <span id="clock"></span></div>
                 </div>
-                <div class="logout-btn" onclick="logout()">
+                <div class="logout-btn" onclick="logout()" style="cursor: pointer;">
                     <img src="<?=base_url('assets/img/logout.png');?>" style="width:40px;height:35px;">
                 </div>
             </div>
@@ -291,33 +297,32 @@
         <div class="row flex-grow-1 mt-2">
             <div class="col-md-4 d-flex flex-column">
                 <div class="cart-panel">
-                    <!-- FIX: Menggunakan isset() untuk mencegah error properti null -->
                     <input id="cartid" type="hidden" value="<?=isset($qhc->id) ? $qhc->id : ''?>">
 
                     <table class="table table-sm cart-table mb-2">
                         <thead class="cart-header">
-                            <tr>
-                                <th>CART ID</th>
-                                <th>STATUS</th>
-                                <th>SOURCE</th>
-                                <th>CLEAR</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="bg-warning fw-bold"><?=isset($qhc->id) ? $qhc->id : '-'?></td>
-                                <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->status) ? $qhc->status : 'NULL')?></td>
-                                <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->cart_source) ? $qhc->cart_source : 'NULL')?></td>
-                                <td onclick="<?=isset($qhc->status) && $qhc->status == 'done' ? '' : 'clearCart()'?>"
-                                    class="bg-danger text-white text-center fw-bold" style="cursor:pointer;">
-                                    <?=isset($qhc->status) && $qhc->status == 'done' ? 'DONE' : 'CLEAR'?>
-                                </td>
-                            </tr>
-                        </tbody>
+    <tr>
+        <th><?= lang('lbl_cart_id'); ?></th>
+        <th><?= lang('lbl_status'); ?></th>
+        <th><?= lang('lbl_source'); ?></th>
+        <th><?= lang('btn_clear'); ?></th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td class="bg-warning fw-bold"><?=isset($qhc->id) ? $qhc->id : '-'?></td>
+        <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->status) ? $qhc->status : 'NULL')?></td>
+        <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->cart_source) ? $qhc->cart_source : 'NULL')?></td>
+        <td onclick="<?=isset($qhc->status) && $qhc->status == 'done' ? '' : 'clearCart()'?>"
+            class="bg-danger text-white text-center fw-bold" style="cursor:pointer;">
+            <?=isset($qhc->status) && $qhc->status == 'done' ? lang('btn_done') : lang('btn_clear'); ?>
+        </td>
+    </tr>
+</tbody>
                     </table>
 
                     <div class="mb-2">
-                        <label class="small fw-bold">Customer</label>
+                        <label class="small fw-bold"><?= lang('lbl_customer'); ?></label>
                         <input id="customer_name" name="customer_name" class="form-control form-control-sm"
                             value="<?=isset($qhc->customer_name) ? $qhc->customer_name : ''?>">
                     </div>
@@ -326,7 +331,7 @@
 
                     <div class="mt-3">
                         <div class="amount-display-box">
-                            <span class="total-label">Total</span>
+                            <span class="total-label"><?= lang('lbl_total'); ?></span>
                             <div class="amount-value">
                                 <span id="amount-display">Rp 0,00</span>
                                 <input id="amount" type="hidden" readonly>
@@ -339,13 +344,13 @@
                             class="btn btn-danger btn-modern w-50 <?=isset($qhc->status) && $qhc->status == 'done' ? '' : 'd-none'?>">Close</button>
                         
                         <button onclick="pay()" class="btn btn-primary w-100 btn-pay-custom"
-                            <?=isset($qhc->status) && $qhc->status == 'done' ? 'disabled' : ''?>>BAYAR</button>
+                            <?=isset($qhc->status) && $qhc->status == 'done' ? 'disabled' : ''?>><?= lang('btn_pay'); ?></button>
                     </div>
 
                     <div class="customer-history-box mt-3">
                         <div class="d-flex gap-2">
-                            <button class="btn w-50 btn-customer-custom" onclick="formcustomer()">DATA CUSTOMER</button>
-                            <button onclick="historysale()" class="btn w-50 btn-history-custom">HISTORY SALE</button>
+                            <button class="btn w-50 btn-customer-custom" onclick="formcustomer()"><?= lang('btn_data_customer'); ?></button>
+                            <button onclick="historysale()" class="btn w-50 btn-history-custom"><?= lang('btn_history'); ?></button>
                         </div>
                     </div>
 
@@ -360,20 +365,20 @@
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-secondary mb-1">SKU</label>
                             <input id="input_sku" type="text" class="form-control form-control-sm modern-input" 
-                                placeholder="cari produk anda disini..." autofocus 
+                                placeholder="<?= lang('placeholder_sku'); ?>" autofocus 
                                 style="border: 1px solid #007bff; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);"> 
                         </div>
                         
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small text-secondary mb-1">Search</label>
+                            <label class="form-label fw-semibold small text-secondary mb-1"><?= lang('lbl_search'); ?></label>
                             <input id="search" oninput="search()" type="text" 
-                                class="form-control form-control-sm modern-input" placeholder="cari produk anda disini...">
+                                class="form-control form-control-sm modern-input" placeholder="<?= lang('placeholder_search'); ?>">
                         </div>
 
                         <div class="col-md-2 d-flex align-items-end justify-content-end">
                             <button onclick="search('')" class="btn btn-sm reload-btn border-0" 
                                 style="background: none; color: #495057; font-weight: 500; padding: 0;">
-                                Reload
+                                <?= lang('btn_reload'); ?>
                             </button>
                         </div>
                     </div>
@@ -385,15 +390,7 @@
                         
                         <div class="d-flex align-items-center flex-wrap">
                             <div id="tag-container" class="d-flex flex-wrap gap-2 w-100">
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #007bff; color: white; border-radius: 8px;">ALAT MANDI</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #007bff; color: white; border-radius: 8px;">MINUMAN</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #007bff; color: white; border-radius: 8px;">PEMBALUT</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #007bff; color: white; border-radius: 8px;">PET FOOD</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #007bff; color: white; border-radius: 8px;">ROKOK</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #007bff; color: white; border-radius: 8px;">SABUN</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #007bff; color: white; border-radius: 8px;">SEMBAKO</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #007bff; color: white; border-radius: 8px;">SPAREPART</span>
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -487,41 +484,54 @@
 
 
     $("#input_sku").on('keyup', function(e) {
-        if (e.key === 'Enter' || e.keyCode === 13) {
-            
-            // Validasi: Jika tidak ada ID keranjang, jangan teruskan proses tambah
-            if(!cartid || cartid === '') {
-                swal("Peringatan", "Data Keranjang Tidak Ditemukan! Silakan Logout lalu Login kembali.", "warning");
-                return;
-            }
-
-            let sku = $("#input_sku").val().trim();
-            $.ajax({
-                type: "POST",
-                url: "<?=base_url('cashier/additem?api='.$this->id_t); ?>",
-                data: "cartid=" + cartid + "&sku=" + sku +
-                    "&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
-                cache: false,
-                dataType: 'json',
-                success: function(res) {
-                    if (res.success == true) {
-                        console.log(res.success)
-                        $("#modalxl").modal('hide');
-
-                        reloadPage();
-
-                        $("#sku-status").text('');
-                    } else {
-
-                        $("#sku-status").text(res.message);
-                    }
-                },
-                error: function(error) {
-                    $('#product-container').html(error);
-                }
-            });
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        
+        // Validasi: Jika tidak ada ID keranjang, jangan teruskan proses tambah
+        if(!cartid || cartid === '') {
+            swal("Peringatan", "Data Keranjang Tidak Ditemukan! Silakan Logout lalu Login kembali.", "warning");
+            return;
         }
-    });
+
+        let sku = $("#input_sku").val().trim();
+        $.ajax({
+            type: "POST",
+            url: "<?=base_url('cashier/additem?api='.$this->id_t); ?>",
+            data: "cartid=" + cartid + "&sku=" + sku +
+                "&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
+            cache: false,
+            dataType: 'json',
+            success: function(res) {
+                if (res.success == true) {
+                    console.log(res.success)
+                    $("#modalxl").modal('hide');
+
+                    reloadPage();
+
+                    $("#sku-status").text('');
+                    $("#input_sku").val(''); // Otomatis kosongkan input kalau sukses
+                } else {
+                    // Update teks kecilnya (opsional)
+                    $("#sku-status").text(res.message);
+                    
+                    // ==========================================
+                    // INI SAKLAR NOTIFIKASINYA BANG!
+                    // ==========================================
+                    swal(
+                        "Gagal Ditambahkan!", 
+                        res.message, // Ini akan otomatis nampilin pesan dari server (misal: "STOCK HABIS")
+                        "warning"
+                    );
+
+                    // Otomatis kosongkan kolom SKU biar kasir ngga perlu hapus manual
+                    $("#input_sku").val('');
+                }
+            },
+            error: function(error) {
+                $('#product-container').html(error);
+            }
+        });
+    }
+});
 
     $(window).resize(function() {
         var tinggi = ($(window).height() - 130);
@@ -545,27 +555,27 @@
 
     }
 
-    function logout() {
-    // Menggunakan SweetAlert dengan konfigurasi yang meniru tampilan modern
-    swal({
-        title: "<div class='logout-icon-container'><i class='fas fa-sign-out-alt'></i></div>Logout", // Judul dengan ikon
-        text: "Are you sure you want to logout?",
-        type: "warning", // Ini akan memberikan ikon kuning, tapi kita akan menimpanya dengan CSS
-        showCancelButton: true,
-        confirmButtonText: "Yes, Logout",
-        cancelButtonText: "Cancel",
-        // Mengubah warna tombol menjadi biru dan abu-abu
-        confirmButtonClass: "btn-custom-logout-yes", // Class kustom untuk tombol "Yes, Logout"
-        cancelButtonClass: "btn-custom-logout-cancel", // Class kustom untuk tombol "Cancel"
-        closeOnConfirm: false,
-        html: true, // Memungkinkan HTML di judul
-    },
-    function(isConfirm) {
-        if (isConfirm) {
-            window.location.href = "<?=base_url('action/logout?api='.$this->id_t); ?>";
-        }
-    });
-}
+   function logout() {
+        // Menggunakan SweetAlert dengan konfigurasi yang meniru tampilan modern & Multi-bahasa
+        swal({
+            // Tetap pertahankan icon HTML-nya, tapi teksnya pakai bahasa dinamis
+            title: "<div class='logout-icon-container'><i class='fas fa-sign-out-alt'></i></div><?= lang('swal_logout_title'); ?>", 
+            text: "<?= lang('swal_logout_text'); ?>",
+            type: "warning", 
+            showCancelButton: true,
+            confirmButtonText: "<?= lang('swal_logout_confirm'); ?>",
+            cancelButtonText: "<?= lang('swal_logout_cancel'); ?>",
+            confirmButtonClass: "btn-custom-logout-yes", 
+            cancelButtonClass: "btn-custom-logout-cancel", 
+            closeOnConfirm: false,
+            html: true, 
+        },
+        function(isConfirm) {
+            if (isConfirm) {
+                window.location.href = "<?=base_url('action/logout?api='.$this->id_t); ?>";
+            }
+        });
+    }
 
     function pilih(cat, device) {
         swal({
@@ -710,28 +720,42 @@
         });
     }
 
-    function clearCart() {
+function clearCart() {
         var cartid = $('#cartid').val();
         if(!cartid || cartid === '') return;
 
-        $.ajax({
-            type: "POST",
-            url: "<?=base_url('cashier/clearcart?api='.$this->id_t); ?>",
-            data: "cartid=" + cartid + "&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
-            cache: false,
-            dataType: 'json',
-            success: function(res) {
-                if (res.success == true) {
-
-                    location.reload();
-                    getAmount()
-                } else {
-
-                    $("#sku-status").text(res.message);
-                }
-            },
-            error: function(error) {
-                $("#modalxl").modal('show');
+        swal({
+            title: "<?= lang('swal_clear_title'); ?>", // <-- Pastikan pakai ini
+            text: "<?= lang('swal_clear_text'); ?>",   // <-- Pastikan pakai ini
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: "<?= lang('swal_clear_confirm'); ?>", // <-- Pastikan pakai ini
+            cancelButtonText: "<?= lang('swal_clear_cancel'); ?>",   // <-- Pastikan pakai ini
+            closeOnConfirm: false
+        },
+        function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "POST",
+                    url: "<?=base_url('cashier/clearcart?api='.$this->id_t); ?>",
+                    data: "cartid=" + cartid + "&<?= $this->security->get_csrf_token_name(); ?>=" + cv,
+                    cache: false,
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.success == true) {
+                            swal("<?= lang('swal_clear_success_title'); ?>", "<?= lang('swal_clear_success_text'); ?>", "success");
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000); 
+                        } else {
+                            swal("<?= lang('swal_clear_failed_title'); ?>", res.message || "<?= lang('swal_clear_failed_text'); ?>", "error");
+                        }
+                    },
+                    error: function(error) {
+                        swal("<?= lang('swal_error_title'); ?>", "<?= lang('swal_error_text'); ?>", "error");
+                    }
+                });
             }
         });
     }
