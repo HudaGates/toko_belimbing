@@ -76,7 +76,7 @@ input[type=number] {
     border: none;
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .input-group.inline-group .btn {
@@ -116,9 +116,10 @@ if (count($qmp) == 0) {
 ?>
 
     <div class="col-lg-2 col-md-4 col-xs-6 mb-3">
-        <div class="card product-card-v2 h-100 p-0 border-0">
-            <div class="row m-0 p-0">
-                <div class="col-12 p-2 text-center">
+        <div class="card product-card-v2 h-100 p-0 border-0 d-flex flex-column">
+            
+            <div>
+                <div class="p-2 text-center">
                     <img src="<?= $filex; ?>" class="product-image-v2" onerror="this.src='<?=base_url('assets/img/box.png');?>'" alt="Product Image">
                     
                     <h5 class="m-0 font-weight-bold pt-2" style="font-size: 0.9rem; color: #181818;">
@@ -126,47 +127,47 @@ if (count($qmp) == 0) {
                     </h5>
                 </div>
                 
-                <div class="col-12 text-center">
+                <div class="text-center">
                     <p class="jetbrains m-0 mb-1" style="font-size: 0.7rem; color: #818181">
                         <?= strtoupper($row->supplier_code) . '-' . $row->product_code; ?>
                     </p>
                 </div>
                 
-                <div class="col-12 px-3">
+                <div class="px-3">
                     <div class="price-stock-row">
-                        <div>
+                        <div class="text-left">
                             <h5 class="m-0">Rp <?= number_format($harga_final); ?></h5>
                             <?php if($persen_disc > 0): ?>
-                                <small class="text-danger"><strike>Rp <?= number_format($row->price); ?></strike></small>
-                            <?php endif; ?>
+                                <small class="text-danger" style="display:block; height:15px; line-height:15px;"><strike>Rp <?= number_format($row->price); ?></strike></small>
+                            <?php else: ?>
+                                <small style="display:block; height:15px;"></small> <?php endif; ?>
                         </div>
                         <span class="stock-pill"><?= $row->stock; ?></span>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-12 px-3">
-                    <div class="input-group inline-group">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-sm btn-minus">-</button>
-                        </div>
-                        <input class="form-control form-control-sm quantity text-center" min="1" name="quantity"
-                            value="1" id="<?= $row->product_code; ?>" type="number">
-                        <div class="input-group-append">
-                            <button class="btn btn-sm btn-plus">+</button>
-                        </div>
+            <div class="mt-auto px-3 pb-3">
+                <div class="input-group inline-group">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-sm btn-minus">-</button>
+                    </div>
+                    <input class="form-control form-control-sm quantity text-center" min="1" name="quantity"
+                        value="1" id="<?= $row->product_code; ?>" type="number">
+                    <div class="input-group-append">
+                        <button class="btn btn-sm btn-plus">+</button>
                     </div>
                 </div>
 
-                <div class="col-12 mt-0 px-3 pb-3">
-                    <button class="add_cart btn btn-block add-btn-v2" 
-                        data-product_code="<?= $row->product_code; ?>"
-                        data-product_name="<?= $row->product_name; ?>" 
-                        data-price="<?= $harga_final; ?>" 
-                        <?= $row->stock < 1 ? 'disabled' : ''; ?>>
-                        <?= lang('btn_add'); ?> 
-                    </button>
-                </div>
+                <button class="add_cart btn btn-block add-btn-v2 m-0" 
+                    data-product_code="<?= $row->product_code; ?>"
+                    data-product_name="<?= $row->product_name; ?>" 
+                    data-price="<?= $harga_final; ?>" 
+                    <?= $row->stock < 1 ? 'disabled' : ''; ?>>
+                    <?= lang('btn_add') ? lang('btn_add') : 'TAMBAH'; ?> 
+                </button>
             </div>
+            
         </div>
     </div>
 
@@ -195,7 +196,7 @@ $('.add_cart').click(function() {
     var cartid = $('#cartid').val();
     var product_code = $(this).data("product_code");
     var product_name = $(this).data("product_name");
-    var price = $(this).data("price"); // Ini sudah membawa harga diskon dari tombol
+    var price = $(this).data("price"); 
     var quantity = $('#' + product_code).val() || 1; 
     
     $.ajax({
