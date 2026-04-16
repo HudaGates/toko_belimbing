@@ -13,10 +13,10 @@ class SystemModel extends CI_Model
 {
     private $editorDb = null;
    
-    //constructor which loads the CodeIgniter database class (not required)
     public function __construct()   {
         parent::__construct();
-        // INI SAKLARNYA BANG! Nyalakan mesin pembuat password (sha1)
+        // Library sha1 tetap di-load jika dibutuhkan untuk idcard, 
+        // tapi untuk password kita pakai MD5 standar PHP
         $this->load->library('sha1'); 
     } 
     
@@ -336,7 +336,7 @@ class SystemModel extends CI_Model
                  $pos_level=$q->pos_level;
                  $data=array(
                      'pos_level'=>$values['pos_level']
-                  );
+                 );
                   $this->db->update('tbl_user',$data,array('pos_level'=>$pos_level));
             } )
              ->on( 'preGet', function ( $editor,$id ) use($user_level,$field,$value){
@@ -657,7 +657,7 @@ class SystemModel extends CI_Model
 
                         });
                         
-                } )        
+                } )         
             ->process( $post )
             ->json();
         }elseif($table=='tbl_rest_time'){
@@ -741,7 +741,7 @@ class SystemModel extends CI_Model
 
                         });
                         
-                } )        
+                } )         
             ->process( $post )
             ->json();
          }elseif($table=='tbl_pesan_andon'){
@@ -904,9 +904,8 @@ class SystemModel extends CI_Model
                         return true;
                     }
                 } ),
-                Field::inst( 'password' )              
-                   ->getFormatter( function ( $val, $data, $opts ) { return null;})
-                ,
+                Field::inst( 'password' )
+                    ->getFormatter( function ( $val, $data, $opts ) { return null; }),
                 Field::inst( 'nama' )->validator( 'Validate::notEmpty' ),
                 Field::inst( 'nik' )->validator( 'Validate::notEmpty' )->validator( Validate::numeric()),
                 Field::inst( 'shift' )
@@ -939,7 +938,8 @@ class SystemModel extends CI_Model
                                 $q->where( 'user_area', $user_area );
                             }
                         })
-                    )->validator( 'Validate::notEmpty' ),
+                    )
+                 ->validator( 'Validate::notEmpty' ),
                  Field::inst( 'user_area' ),
                  Field::inst( 'user_group' ),
                  Field::inst( 'email' )->setFormatter(Format::ifEmpty(null)),
@@ -950,77 +950,71 @@ class SystemModel extends CI_Model
             )
             
             ->on('preCreate', function ($editor, &$values) {
-                    $p = $this->sha1->generate($values['password']);
-                    $p = strrev($p);
-                    $p = substr($p, 5);
-                    $editor
-                        ->field('registrasi')
-                        ->setValue(gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7));
-                    $values['password'] = $p;
-                    $values['idcard'] = $this->sha1->generate($values['username']);
-                    $q = $this->db->get_where('tbl_level', array('user_level' => $values['user_level']), 1)->row();
-                    $values['user_area'] = $q->user_area;
-                    $values['user_group'] = $q->user_group;
-                })
-                ->on('postCreate', function ($editor, $id, &$values, &$row) {
+                // PAKSA MD5 LANGSUNG KE NILAI PASSWORD
+                $values['password'] = md5($values['password']);
+                
+                $editor
+                    ->field('registrasi')
+                    ->setValue(gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7));
                     
-                    $va['username'] = $values['username'];
-                    $va['user_level'] = $values['user_level'];
-                    $m = $this->db->get('tbl_menu')->result();
-                    foreach ($m as $key) {
-                        if ($va['user_level'] == 'Administrator') {
-                            $ot = 'yes';
-                            $ex = 'yes';
-                        } else {
-                            $ot = 'no';
-                            $ex = 'no';
-                        }
-                        $da[] = array(
-                            'menuid' => $key->menuid,
-                            'username' => $va['username'],
-                            'view_level' => $ot,
-                            'add_level' => 'no',
-                            'edit_level' => 'no',
-                            'delete_level' => 'no',
-                            'import_level' => 'no',
-                            'print_level' => 'no',
-                            'export_level' => $ex,
-                            'del_all' => 'no',
-                        );
-                    }
-                    $this->db->insert_batch('tbl_menu_user', $da);
-                })
-                ->on('preEdit', function ($editor, $id, $values) {
-                  
-
-                    $qu = $this->db->get_where('tbl_user', array('id' => $id), 1)->row();
-                    if (!empty($values['password'])) {
-                        $p = $this->sha1->generate($values['password']);
-                        $p = strrev($p);
-                        $p = substr($p, 5);
-                        $editor->field('password')->setValue($p);
+                $values['idcard'] = $this->sha1->generate($values['username']);
+                $q = $this->db->get_where('tbl_level', array('user_level' => $values['user_level']), 1)->row();
+                $values['user_area'] = $q->user_area;
+                $values['user_group'] = $q->user_group;
+            })
+            ->on('postCreate', function ($editor, $id, &$values, &$row) {
+                
+                $va['username'] = $values['username'];
+                $va['user_level'] = $values['user_level'];
+                $m = $this->db->get('tbl_menu')->result();
+                foreach ($m as $key) {
+                    if ($va['user_level'] == 'Administrator') {
+                        $ot = 'yes';
+                        $ex = 'yes';
                     } else {
-                        $editor->field('password')->setValue($qu->password);
+                        $ot = 'no';
+                        $ex = 'no';
                     }
-                    $q = $this->db->get_where('tbl_level', array('user_level' => $values['user_level']), 1)->row();
-                    $editor
-                        ->field('user_area')
-                        ->setValue($q->user_area);
-                    $editor
-                        ->field('user_group')
-                        ->setValue($q->user_group);
-                    if ($values['username'] != $qu->username) {
-                        $da = array(
-                            'username' => $values['username']
-                        );
-                        $this->db->update('tbl_menu_user', $da, array('username' => $qu->username));
-                    }
-                })
-                ->on('preRemove', function ($editor, $id, &$values) {
-                    $va['username'] = $values['username'];
-                    $this->db->delete('tbl_menu_user', array('username' => $va['username']));
-                })
-           
+                    $da[] = array(
+                        'menuid' => $key->menuid,
+                        'username' => $va['username'],
+                        'view_level' => $ot,
+                        'add_level' => 'no',
+                        'edit_level' => 'no',
+                        'delete_level' => 'no',
+                        'import_level' => 'no',
+                        'print_level' => 'no',
+                        'export_level' => $ex,
+                        'del_all' => 'no',
+                    );
+                }
+                $this->db->insert_batch('tbl_menu_user', $da);
+            })
+            ->on('preEdit', function ($editor, $id, &$values) {
+                $qu = $this->db->get_where('tbl_user', array('id' => $id), 1)->row();
+                
+                // JIKA PASSWORD DIISI (GANTI PASSWORD)
+                if (!empty($values['password'])) {
+                    $values['password'] = md5($values['password']);
+                } else {
+                    // JIKA KOSONG, PAKAI PASSWORD LAMA YANG ADA DI DB
+                    $values['password'] = $qu->password;
+                }
+                
+                $q = $this->db->get_where('tbl_level', array('user_level' => $values['user_level']), 1)->row();
+                $editor->field('user_area')->setValue($q->user_area);
+                $editor->field('user_group')->setValue($q->user_group);
+                
+                if ($values['username'] != $qu->username) {
+                    $da = array('username' => $values['username']);
+                    $this->db->update('tbl_menu_user', $da, array('username' => $qu->username));
+                }
+            })
+            ->on('preRemove', function ($editor, $id, &$values) {
+                $va['username'] = $values['username'];
+                $this->db->delete('tbl_menu_user', array('username' => $va['username']));
+            })
+            
           ->on( 'preGet', function ( $editor,$id ) use($user_level,$field,$value){
                         $editor->where( function ( $q ) use($user_level,$field,$value){
                             if($field){
@@ -1045,7 +1039,7 @@ class SystemModel extends CI_Model
 
                         });
                         
-                } )    
+                } )     
             ->validator( function ( $editor, $action, $data ) {
                /* if ( $action !== Editor::ACTION_READ && $user_group=='Admin') {
                     return 'Cannot modify data';
@@ -1113,7 +1107,7 @@ class SystemModel extends CI_Model
 
                         });
                         
-                } )    
+                } )     
             ->leftJoin( 'tbl_master_seat', 'tbl_master_seat.part_no', '=', 'tbl_master_document.part_no' )    
             ->process( $post )
             ->json();
