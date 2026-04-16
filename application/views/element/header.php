@@ -104,6 +104,69 @@
     .cursor {
         cursor: pointer;
     }
+    /* ========================================== */
+    /* ==========================================
+       SULAP HEADER HALAMAN JADI CARD PUTIH (GLOBAL)
+       ========================================== */
+    
+    .content-header {
+        padding: 15px 15px 0 15px !important;
+    }
+    
+    /* Membungkus tabel jam "Good Night Admin" jadi kotak putih elegan */
+    .content-header > .container-fluid > .row.mb-1,
+    .content-header > .container-fluid > .row:first-child {
+        background-color: #ffffff !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+        padding: 15px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border: 1px solid #f0f2f5 !important;
+    }
+
+    /* Merapikan letak Breadcrumb (Tulisan "Home / Data User") */
+    .content-header .breadcrumb {
+        background: transparent !important;
+        padding: 12px 0 0 5px !important;
+        margin: 0 !important;
+        font-weight: 500 !important;
+    }
+    .content-header .breadcrumb a {
+        color: #6c757d !important;
+    }
+    .content-header .breadcrumb .active {
+        color: #007bff !important;
+        font-weight: bold !important;
+    }
+    /* ==========================================
+       FINAL TOUCH: TATA LETAK & JARAK (SPACING)
+       ========================================== */
+
+    /* 1. Memberi jarak (gap) antara Header (Jam) dan Konten Tabel di bawahnya */
+    .content {
+        padding: 0 15px 15px 15px !important;
+        margin-top: 15px !important; /* Ini kunci utamanya biar berjarak bang! */
+    }
+
+    /* 2. Memastikan Kotak (Card) bawaan tabel jadi melengkung & bersih */
+    .content > .container-fluid > .row > .col-12 > .card {
+        background-color: #ffffff !important;
+        border-radius: 15px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+        border: none !important;
+        padding: 10px; /* Biar isi di dalamnya bernapas */
+        margin-bottom: 20px !important;
+    }
+    
+    /* Hilangkan background bawaan pembungkus tabel biar gak dobel kotak */
+    .dataTables_wrapper {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10px !important;
+    }
+    /* ========================================== */
+    /* ========================================== */
     </style>
     <script src="<?=base_url('assets/lte/jquery/jquery-2.1.3.min.js')?>"></script>
     <script src="<?=base_url('assets/lte/jquery/jquery-ui.js')?>"></script>
@@ -141,17 +204,11 @@
     var Diff = serverTime.getTime() - clientTime.getTime();
     //fungsi displayTime yang dipanggil di bodyOnLoad dieksekusi tiap 1000ms = 1detik
     function displayServerTime() {
-        //buat object date berdasarkan waktu di client
         var clientTime = new Date();
-        //buat object date dengan menghitung selisih waktu client dan server
         var time = new Date(clientTime.getTime() + Diff);
-        //ambil nilai jam
         var sh = time.getHours().toString();
-        //ambil nilai menit
         var sm = time.getMinutes().toString();
-        //ambil nilai detik
         var ss = time.getSeconds().toString();
-        //tampilkan jam:menit:detik dengan menambahkan angka 0 jika angkanya cuma satu digit (0-9)
         document.getElementById("clock").innerHTML = (sh.length == 1 ? "0" + sh : sh) + ":" + (sm.length == 1 ? "0" +
             sm : sm) + ":" + (ss.length == 1 ? "0" + ss : ss);
     }
@@ -169,20 +226,20 @@
     </div>
     <div class="wrapper">
         
-        <nav class="main-header navbar navbar-expand navbar-dark navbar-<?=$thema;?> text-sm border-bottom-0">
+        <nav class="main-header navbar navbar-expand navbar-light navbar-white text-sm border-bottom-0 shadow-sm">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link text-dark" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="" class="nav-link">Home</a>
+                    <a href="" class="nav-link text-dark">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link"
+                    <a href="#" class="nav-link text-dark"
                         onclick="menu('<?=base_url('action/contact');?>','Contact');">Contact</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link"
+                    <a href="#" class="nav-link text-dark"
                         onclick="window.open('<?=base_url("home?api=".$this->id_t);?>', '_blank');" title="New Tab"><i
                             class="fa fa-plus"></i></a>
                 </li>
@@ -190,10 +247,10 @@
 
             <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                        aria-label="Search">
+                    <input class="form-control form-control-navbar bg-light" type="search" placeholder="Search"
+                        aria-label="Search" style="border: 1px solid #ced4da;">
                     <div class="input-group-append">
-                        <button class="btn btn-navbar" type="reset">
+                        <button class="btn btn-navbar" type="reset" style="border: 1px solid #ced4da; border-left: none;">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
@@ -202,46 +259,42 @@
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link brand-image img-circle elevation-1" data-widget="dropdown" href="#"
+                    <a class="nav-link text-danger" data-widget="dropdown" href="#"
                         onclick="logout()" title="Logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
-
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link brand-image img-circle elevation-1" data-widget="control-sidebar"
+                    <a class="nav-link text-dark" data-widget="control-sidebar"
                         data-slide="true" href="#" role="button" title="Thema">
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
             </ul>
         </nav>
-        <aside class="main-sidebar sidebar-dark-<?=$thema;?> elevation-0">
-            <div class="brand-link navbar-<?=$thema;?> text-sm" style="padding: 4px">
-                <div class="row">
+
+        <aside class="main-sidebar sidebar-light-<?=$thema;?> elevation-2">
+            <div class="brand-link bg-white text-sm" style="padding: 4px; border-bottom: 1px solid #dee2e6;">
+                <div class="row align-items-center">
                     <div class="col-3">
-                        <img src="<?=$logo.'?id='.time();?>" class="brand-image img-circle elevation-2"
-                            style="height: 60px !important; width: 50px !important; margin: 0 !important;">
+                        <img src="<?=$logo.'?id='.time();?>" class="brand-image img-circle elevation-1"
+                            style="height: 40px !important; width: 40px !important; margin-left: 5px !important;">
                     </div>
                     <div class="col-9 brand-text">
-                        <div class=" font-weight-bold text-white" style="font-size: 0.9rem;">&nbsp;<?=$detail;?></div>
-                        <div class="m-0 brand-text" style="font-size: 0.6rem;">&nbsp;<?=$owner;?></div>
+                        <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">&nbsp;<?=$detail;?></div>
+                        <div class="m-0 text-muted" style="font-size: 0.6rem;">&nbsp;<?=$owner;?></div>
                     </div>
-
                 </div>
-
-
             </div>
 
-            <div class="sidebar" style="background-color: #222;">
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="border-bottom: 1px solid #dee2e6;">
                     <div class="image">
-                        <img src="<?=$gambar;?>" class="img-circle elevation-0" alt="<?=$cu->nama; ?>">
+                        <img src="<?=$gambar;?>" class="img-circle elevation-1" alt="<?=$cu->nama; ?>">
                     </div>
                     <div class="info">
-                        <h5 class="m-0 font-weight-normal text-white"><?=$cu->nama; ?></h5>
-
-                        <a style="font-size: 0.8rem;" href="#" class="d-block"><?= $cu->user_level;?></a>
+                        <h5 class="m-0 font-weight-bold text-dark" style="font-size: 1rem;"><?=$cu->nama; ?></h5>
+                        <a style="font-size: 0.8rem;" href="#" class="d-block text-muted"><?= $cu->user_level;?></a>
                     </div>
                 </div>
 
@@ -252,9 +305,7 @@
                             <a href="" class="nav-link"
                                 onclick="$('.nav-link.1').removeClass('active'); $(this).addClass('active');">
                                 <i class="nav-icon fas fa-house-user"></i>
-                                <p>
-                                    Home
-                                </p>
+                                <p>Home</p>
                             </a>
                         </li>
 
@@ -340,4 +391,4 @@
                 </nav>
                 </div>
             </aside>
-        <div class="content-wrapper" id="content" style="display: flex;flex-direction: column; background-color: #eee;">
+            <div class="content-wrapper" id="content" style="display: flex;flex-direction: column; background-color: #f4f6f9;">
