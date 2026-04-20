@@ -326,7 +326,7 @@
     <div class="container-fluid vh-100 d-flex flex-column">
         <div class="cashier-header">
             <div class="d-flex align-items-center">
-                <img src="<?=base_url('assets/img/png-clipart-sale.png');?>"
+                <img src="<?=base_url('assets/img/toko_belimbing.png');?>"
                     style="width:50px;height:35px;margin-right:10px;">
                 <div>
                     <h5>TOKO BELIMBING</h5>

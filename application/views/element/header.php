@@ -277,8 +277,8 @@
             <div class="brand-link bg-white text-sm" style="padding: 4px; border-bottom: 1px solid #dee2e6;">
                 <div class="row align-items-center">
                     <div class="col-3">
-                        <img src="<?=$logo.'?id='.time();?>" class="brand-image img-circle elevation-1"
-                            style="height: 40px !important; width: 40px !important; margin-left: 5px !important;">
+                        <img src="<?= base_url('assets/img/toko_belimbing.png'); ?>" class="brand-image elevation-1"
+                            style="height: 40px !important; width: auto !important; border-radius: 4px; margin-left: 5px !important; background: #fff;">
                     </div>
                     <div class="col-9 brand-text">
                         <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">&nbsp;<?=$detail;?></div>

@@ -37,19 +37,16 @@
                 <div class="card shadow-sm border-0 d-flex justify-content-center align-items-center" 
                      style="border-radius: 15px; min-height: 65vh; background: #ffffff;">
                     <div class="text-center p-5">
+                        
                         <div class="mb-4">
-                            <div class="d-inline-flex justify-content-center align-items-center bg-primary text-white" 
-                                 style="width: 80px; height: 80px; border-radius: 50%; font-size: 2rem; box-shadow: 0 4px 10px rgba(0,123,255,0.3);">
-                                <i class="fas fa-store"></i>
-                            </div>
+                            <img src="<?= base_url('assets/img/toko_belimbing.png'); ?>" alt="Logo Toko Belimbing" 
+                                style="max-width: 400px; height: auto; mix-blend-mode: multiply; filter: brightness(1.05) contrast(1.2);">
                         </div>
-                        <h1 class="font-weight-bold text-dark mb-2" style="font-size: 2.2rem;"><?=$title;?></h1>
-                        <p class="text-muted mb-4" style="font-size: 1.1rem; max-width: 600px; margin: auto;">
-                            <?=$detail;?>
-                        </p>
-                        <span class="badge badge-light text-primary px-4 py-2" style="font-size: 1rem; border-radius: 20px; border: 1px solid #cce5ff;">
+                        
+                        <span class="badge badge-light text-primary px-4 py-2 mt-3" style="font-size: 1rem; border-radius: 20px; border: 1px solid #cce5ff;">
                             <i class="fas fa-shield-alt mr-1"></i> Administrator Panel
                         </span>
+                        
                     </div>
                 </div>
             </div>
