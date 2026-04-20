@@ -355,27 +355,23 @@
                 <div class="cart-panel">
                     <input id="cartid" type="hidden" value="<?=isset($qhc->id) ? $qhc->id : ''?>">
 
-                    <table class="table table-sm cart-table mb-2">
-                        <thead class="cart-header">
-    <tr>
-        <th><?= lang('lbl_cart_id'); ?></th>
-        <th><?= lang('lbl_status'); ?></th>
-        <th><?= lang('lbl_source'); ?></th>
-        <th><?= lang('btn_clear'); ?></th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td class="bg-warning fw-bold"><?=isset($qhc->id) ? $qhc->id : '-'?></td>
-        <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->status) ? $qhc->status : 'NULL')?></td>
-        <td class="bg-success text-white fw-bold"><?=strtoupper(isset($qhc->cart_source) ? $qhc->cart_source : 'NULL')?></td>
-        <td onclick="<?=isset($qhc->status) && $qhc->status == 'done' ? '' : 'clearCart()'?>"
-            class="bg-danger text-white text-center fw-bold" style="cursor:pointer;">
-            <?=isset($qhc->status) && $qhc->status == 'done' ? lang('btn_done') : lang('btn_clear'); ?>
-        </td>
-    </tr>
-</tbody>
-                    </table>
+        <table class="table table-sm cart-table mb-2">
+    <thead class="cart-header">
+        <tr>
+            <th style="width: 50%;"><?= lang('lbl_cart_id'); ?></th>
+            <th style="width: 50%;"><?= lang('btn_clear'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bg-warning fw-bold text-center"><?=isset($qhc->id) ? $qhc->id : '-'?></td>
+            <td onclick="<?=isset($qhc->status) && $qhc->status == 'done' ? '' : 'clearCart()'?>"
+                class="bg-danger text-white text-center fw-bold" style="cursor:pointer;">
+                <?=isset($qhc->status) && $qhc->status == 'done' ? lang('btn_done') : lang('btn_clear'); ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
                     <div class="mb-2">
                         <label class="small fw-bold"><?= lang('lbl_customer'); ?></label>
@@ -432,11 +428,11 @@
                         </div>
 
                         <div class="col-md-2 d-flex align-items-end justify-content-end">
-                            <button onclick="search('')" class="btn btn-sm reload-btn border-0" 
-                                style="background: none; color: #495057; font-weight: 500; padding: 0;">
-                                <?= lang('btn_reload'); ?>
-                            </button>
-                        </div>
+    <button onclick="search('')" class="btn btn-outline-primary btn-sm shadow-sm" 
+        style="border-radius: 8px; font-weight: 600; padding: 5px 12px; display: flex; align-items: center; gap: 5px;">
+        <i class="fas fa-sync-alt"></i> <?= lang('btn_reload'); ?>
+    </button>
+</div>
                     </div>
 
                     <div class="col-md-12 mt-3">
