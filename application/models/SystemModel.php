@@ -1047,6 +1047,73 @@ class SystemModel extends CI_Model
             } )
             ->process( $post )
             ->json();
+
+        }elseif($table=='tbl_master_product'){
+            Editor::inst( $this->editorDb, $table)
+            ->fields(
+                Field::inst( 'id' ),
+                Field::inst( 'product_code' )->validator( 'Validate::notEmpty' )->validator( 'Validate::unique' ),
+                Field::inst( 'product_name' )->validator( 'Validate::notEmpty' ),
+                Field::inst( 'supplier_code' ),
+                Field::inst( 'unit' ),
+                Field::inst( 'stock' )->validator( 'Validate::numeric' ),
+                Field::inst( 'price' )->validator( 'Validate::numeric' ),
+                Field::inst( 'discount' )->validator( 'Validate::numeric' ),
+                Field::inst( 'category_id' ),
+                
+                // --- INI FITUR STATUSNYA BANG ---
+                Field::inst( 'status' )
+                    ->options( function() {
+                        return array(
+                            array('value' => 'Active', 'label' => 'Active'),
+                            array('value' => 'Non-Active', 'label' => 'Non-Active')
+                        );
+                    })
+                    ->setFormatter( Format::ifEmpty( 'Active' ) )
+                    ->validator( 'Validate::notEmpty' ),
+
+                // --- UPLOAD FOTO PRODUK ---
+                Field::inst( 'img_product' )
+                    ->setFormatter(Format::ifEmpty(null))
+                    ->upload( Upload::inst( './assets/img/__NAME__' )
+                        ->db( 'files', 'id', array(
+                            'filename'    => Upload::DB_FILE_NAME,
+                            'remark'      => 'PRODUCT',
+                            'filesize'    => Upload::DB_FILE_SIZE,
+                            'web_path'    => Upload::DB_WEB_PATH,
+                            'system_path' => Upload::DB_SYSTEM_PATH
+                        ) )
+                        ->validator( Validate::fileSize( 2000000, 'Files must be smaller than 2MB' ) )
+                        ->validator( Validate::fileExtensions( array( 'png', 'jpg', 'jpeg' ), "Please upload an image" ) )
+                    ),
+                
+                Field::inst('update_by')->set(true)->setValue($nama),
+                Field::inst('update_time')->set(true)->setValue( gmdate('Y-m-d H:i:s',time()+60*60*7))
+            )
+            ->on( 'preGet', function ( $editor,$id ) use($user_level,$field,$value){
+                $editor->where( function ( $q ) use($user_level,$field,$value){
+                    if($field){
+                        $val_t=explode(',,',$value);
+                        $fie_t=explode(',,',$field);
+                        $ex_x=count($val_t);
+                        for ($i = 0; $i < $ex_x; $i++) {
+                            $ex = explode('|', $val_t[$i]);
+                            if($ex[0]=='null' and $ex[1]=='='){
+                                 $q->where($fie_t[$i], null);
+                            }else{
+                                if ($ex[1] == 'IN') {
+                                    $q->where($fie_t[$i], $ex[0], $ex[1], false);
+                                } else {
+                                    $q->where($fie_t[$i], $ex[0], $ex[1]);
+                                }
+                            }
+                        }
+                    }
+                });
+            } ) 
+            ->process( $post )
+            ->json();
+
         }elseif($table=='tbl_master_document'){
              Editor::inst( $this->editorDb, $table)
                 ->field(
