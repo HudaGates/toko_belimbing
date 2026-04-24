@@ -115,19 +115,19 @@ $(document).ready(function() {
         table: "#example",
         fields: [ 
           <?php foreach($data_field as $row){
-                    if($row->name=='id'){ ?>
+                    if($row->name=='id'){ ?>,
                     {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
                         type: "hidden"
                     },
-                  <?php }elseif($row->name=='update_by'){ ?>
+                  <?php }elseif($row->name=='update_by'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
                         type: "hidden",
                     },
-                  <?php }elseif($row->name=='image'){ ?>
+                  <?php }elseif($row->name=='image'){ ?>,
                      {
                         label: "Logo:",
                         name: "image",
@@ -138,7 +138,7 @@ $(document).ready(function() {
                         clearText: "Clear",
                         noImageText: 'No image',
                     },
-                  <?php }elseif($row->name=='bg'){ ?>
+                  <?php }elseif($row->name=='bg'){ ?>,
                      {
                         label: "Background:",
                         name: "bg",
@@ -149,25 +149,25 @@ $(document).ready(function() {
                         clearText: "Clear",
                         noImageText: 'No image',
                     },
-                  <?php }elseif($row->name=='update_time'){ ?>
+                  <?php }elseif($row->name=='update_time'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
                         type: "hidden",
                     },
-                     <?php }elseif($row->type=='text'){ ?>
+                     <?php }elseif($row->type=='text'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
                         type: "text",
                     },
-                    <?php }elseif($row->type=='char'){ ?>
+                    <?php }elseif($row->type=='char'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
                         type: "select",
                     },
-                  <?php }elseif($row->type=='year'){ ?>
+                  <?php }elseif($row->type=='year'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
@@ -176,7 +176,7 @@ $(document).ready(function() {
                         format: 'YYYY',
                        
                     },
-                   <?php }elseif($row->name=='shift'){ ?>
+                   <?php }elseif($row->name=='shift'){ ?>,
                       {
                         label: "<?=$row->name;?>:".toUpperCase(),
                         name: "<?=$row->name;?>",
@@ -187,7 +187,7 @@ $(document).ready(function() {
                             { label: "3",value: "3" }
                         ]
                     },
-                  <?php }elseif($row->name=='thema'){ ?>
+                  <?php }elseif($row->name=='thema'){ ?>,
                       {
                         label: "<?=$row->name;?>:".toUpperCase(),
                         name: "<?=$row->name;?>",
@@ -201,7 +201,7 @@ $(document).ready(function() {
                             { label: "Danger",value: "danger" }
                         ]
                     },
-                  <?php }elseif($row->name=='login_methode'){ ?>
+                  <?php }elseif($row->name=='login_methode'){ ?>,
                       {
                         label: "<?=$row->name;?>:".toUpperCase(),
                         name: "<?=$row->name;?>",
@@ -212,7 +212,7 @@ $(document).ready(function() {
                             { label: "-",value: "-" }
                         ]
                     },
-                  <?php }elseif($row->type=='date'){ ?>
+                  <?php }elseif($row->type=='date'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
@@ -221,7 +221,7 @@ $(document).ready(function() {
                         format: 'YYYY-MM-DD',
                        
                     },
-                  <?php }elseif($row->type=='datetime'){ ?>
+                  <?php }elseif($row->type=='datetime'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
@@ -235,7 +235,7 @@ $(document).ready(function() {
                         }
                        
                     },
-                   <?php }elseif($row->type=='time'){ ?>
+                   <?php }elseif($row->type=='time'){ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
@@ -248,7 +248,7 @@ $(document).ready(function() {
                         }
                        
                     },
-                    <?php }else{ ?>
+                    <?php }else{ ?>,
                      {
                         label: "<?=$row->name;?>:",
                         name: "<?=$row->name;?>",
@@ -331,7 +331,7 @@ $(document).ready(function() {
                 searchable: false,
             },
             <?php foreach($data_field as $row){ 
-              if($row->name=='image'){?>
+              if($row->name=='image'){?>,
                 {
                 data: "image",
                 render: function ( file_id ) {
@@ -342,7 +342,7 @@ $(document).ready(function() {
                     defaultContent: "No image",
                     title: "IMAGE"
                 },
-              <?php }elseif($row->name=='bg'){ ?>
+              <?php }elseif($row->name=='bg'){ ?>,
                 {
                 data: "bg",
                 render: function ( file_id ) {
@@ -370,7 +370,7 @@ $(document).ready(function() {
         },
         colReorder: true,
         buttons: [
-            <?php if($get_o->add_level=='yes'){ ?>
+            <?php if($get_o->add_level=='yes'){ ?>,
             { 
               extend: "create",
               text: "<span class='text-green'>New</span>",
@@ -380,7 +380,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
             },
-            <?php } if($get_o->edit_level=='yes'){ ?>
+            <?php } if($get_o->edit_level=='yes'){ ?>,
             { 
               extend: "edit",
               text: "<span class='text-green'>Edit</span>",
@@ -390,7 +390,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
            },
-            <?php } if($get_o->delete_level=='yes'){ ?>
+            <?php } if($get_o->delete_level=='yes'){ ?>,
             { 
               extend: "remove",
               text: "<span class='text-red'>Delete</span>",
@@ -400,7 +400,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
             },
-            <?php } if($get_o->export_level=='yes'){?>
+            <?php } if($get_o->export_level=='yes'){?>,
             {
                 extend: 'collection',
                 text: "<span class='text-green'>Export</span>",
@@ -412,7 +412,7 @@ $(document).ready(function() {
                     'print'
                 ]
             },
-            <?php } if($get_o->import_level=='yes'){ ?>
+            <?php } if($get_o->import_level=='yes'){ ?>,
             /*{
                 text: 'Import Excel',
                 action: function () {
@@ -427,13 +427,13 @@ $(document).ready(function() {
                 } );
               }
             },
-            <?php } ?>
+            <?php } ?>,
             {
                 extend: 'selectAll',
                 className: 'btn-space text-green'
             },
             'selectNone',
-          <?php if($get_o->print_level=='yes'){ ?>  
+          <?php if($get_o->print_level=='yes'){ ?> , 
             {
                 text: "<span class='text-green'>Print</span>",
                  className: 'btn btn-print',
@@ -453,7 +453,7 @@ $(document).ready(function() {
                     print_all('<?=$table;?>');
                 }
             },
-            <?php }if($get_o->del_all=='yes'){  ?>
+            <?php }if($get_o->del_all=='yes'){  ?>,
                {
                 text: '<i class="fas fa-trash-alt  text-red"></i>',
                 className: 'btn btn-default',
