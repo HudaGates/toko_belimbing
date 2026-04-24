@@ -267,7 +267,7 @@ $(document).ready(function() {
               { data: "tbl_master_document.<?=$row->name;?>"},
             <?php }elseif($row->name=='update_by'){ ?>
                 { data: "tbl_master_document.<?=$row->name;?>"},
-            <?php }elseif($row->name=='file'){ ?>
+            <?php }elseif($row->name=='file'){ ?>,
                 {
                 data: "tbl_master_document.file",
                 render: function ( file_id ) {
@@ -290,7 +290,7 @@ $(document).ready(function() {
                 },
             <?php }else{ ?>
                 { data: "tbl_master_document.<?=$row->name;?>", className: 'editable'},
-             <?php } } ?>
+             <?php } } ?>,
               { data: "tbl_master_seat.item" }
         ],
         select: {
@@ -299,7 +299,7 @@ $(document).ready(function() {
         },
         colReorder: true,
         buttons: [
-            <?php if($get_o->add_level=='yes'){ ?>
+            <?php if($get_o->add_level=='yes'){ ?>,
             { 
               extend: "create",
               text: "<span class='text-green'>New</span>",
@@ -309,7 +309,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
             },
-            <?php } if($get_o->edit_level=='yes'){ ?>
+            <?php } if($get_o->edit_level=='yes'){ ?>,
             { 
               extend: "edit",
               text: "<span class='text-green'>Edit</span>",
@@ -319,7 +319,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
            },
-            <?php } if($get_o->delete_level=='yes'){ ?>
+            <?php } if($get_o->delete_level=='yes'){ ?>,
             { 
               extend: "remove",
               text: "<span class='text-red'>Delete</span>",
@@ -329,7 +329,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
             },
-            <?php } if($get_o->export_level=='yes'){?>
+            <?php } if($get_o->export_level=='yes'){?>,
             {
                 extend: 'collection',
                 text: "<span class='text-green'>Export</span>",
@@ -341,7 +341,7 @@ $(document).ready(function() {
                     'print'
                 ]
             },
-            <?php } if($get_o->import_level=='yes'){ ?>
+            <?php } if($get_o->import_level=='yes'){ ?>,
             /*{
                 text: 'Import Excel',
                 action: function () {
@@ -357,13 +357,13 @@ $(document).ready(function() {
                 uploadEditor.field('csv').input().val('');
               }
             },
-            <?php } ?>
+            <?php } ?>,
             {
                 extend: 'selectAll',
                 className: 'btn-space text-green'
             },
             'selectNone',
-          <?php if($get_o->print_level=='yes'){ ?>  
+          <?php if($get_o->print_level=='yes'){ ?>  ,
             {
                  extend: "selectedSingle",
                  text: "<i class='fas fa-print text-green'></i>",
@@ -375,7 +375,7 @@ $(document).ready(function() {
                     print_l(data.id);
                 }
             },
-             <?php } if($get_o->print_level=='yes'){ ?>  
+             <?php } if($get_o->print_level=='yes'){ ?> , 
             {
                  text: '<i class="fas fa-print text-green"></i>',
                  className: 'btn btn-default',
@@ -384,7 +384,7 @@ $(document).ready(function() {
                     print_all('<?=$table;?>');
                 }
             },
-             <?php } if($table=='tbl_master_plc'){ ?>  
+             <?php } if($table=='tbl_master_plc'){ ?>  ,
             {
                  extend: "selectedSingle",
                  text: '<i class="fas fa-network-wired  text-green"></i>',
@@ -401,7 +401,7 @@ $(document).ready(function() {
                     }
                   }
             },
-            <?php }if($get_o->del_all=='yes'){  ?>
+            <?php }if($get_o->del_all=='yes'){  ?>,
                {
                 text: '<i class="fas fa-trash-alt  text-red"></i>',
                 className: 'btn btn-default',
