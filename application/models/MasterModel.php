@@ -358,6 +358,7 @@ class MasterModel extends CI_Model
                     Field::inst('product_code'),
                     Field::inst('product_name'),
                     Field::inst('supplier_code'),
+                    Field::inst( 'status' ),
                     Field::inst('img_product')
                     ->upload(Upload::inst('./assets/product/img/__NAME__')
                             ->db('files', 'id', array(

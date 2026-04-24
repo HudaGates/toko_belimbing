@@ -116,9 +116,7 @@ class SystemModel extends CI_Model
                  ->validator( 'Validate::unique' )
                  ->validator( 'Validate::notEmpty' )
             )
-            ->on( 'preEdit', function ( $editor, $id, $values) {
-                $this->ChangeGroup('edit',$id, $values );
-            } )
+        
             ->on( 'preRemove', function ($editor, $id, $values ) {
                 $this->ChangeGroup('delete',$id, $values );
             } )
@@ -1060,19 +1058,7 @@ class SystemModel extends CI_Model
                 Field::inst( 'price' )->validator( 'Validate::numeric' ),
                 Field::inst( 'discount' )->validator( 'Validate::numeric' ),
                 Field::inst( 'category_id' ),
-                
-                // --- INI FITUR STATUSNYA BANG ---
-                Field::inst( 'status' )
-                    ->options( function() {
-                        return array(
-                            array('value' => 'Active', 'label' => 'Active'),
-                            array('value' => 'Non-Active', 'label' => 'Non-Active')
-                        );
-                    })
-                    ->setFormatter( Format::ifEmpty( 'Active' ) )
-                    ->validator( 'Validate::notEmpty' ),
-
-                // --- UPLOAD FOTO PRODUK ---
+                Field::inst( 'status' ),
                 Field::inst( 'img_product' )
                     ->setFormatter(Format::ifEmpty(null))
                     ->upload( Upload::inst( './assets/img/__NAME__' )
@@ -1090,6 +1076,11 @@ class SystemModel extends CI_Model
                 Field::inst('update_by')->set(true)->setValue($nama),
                 Field::inst('update_time')->set(true)->setValue( gmdate('Y-m-d H:i:s',time()+60*60*7))
             )
+            ->on( 'preEdit', function ( $editor, $id, $values ) {
+                if (isset($values['status'])) {
+                    $this->db->update('tbl_master_product', array('status' => $values['status']), array('id' => $id));
+                }
+            })
             ->on( 'preGet', function ( $editor,$id ) use($user_level,$field,$value){
                 $editor->where( function ( $q ) use($user_level,$field,$value){
                     if($field){

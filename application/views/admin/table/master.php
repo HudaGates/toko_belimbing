@@ -333,6 +333,18 @@ $(document).ready(function() {
 
                 ]
             },
+
+            <?php }elseif($row->name=='status'){ ?> {
+                label: "STATUS BARANG:",
+                name: "status",
+                type: "select",
+                def: "Active",
+                options: [
+                    { label: "Active", value: "Active" },
+                    { label: "Non-Active", value: "Non-Active" }
+                ]
+            },
+
             <?php }else{ ?> {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
@@ -498,8 +510,16 @@ $(document).ready(function() {
                 defaultContent: "No image",
                 title: "<?=$row->name;?>",
             },
+            <?php } elseif($row->name=='status'){ ?> {
+                // INI OBAT KHUSUS UNTUK KOLOM STATUS BANG!
+                data: "status",
+                defaultContent: "Active",
+                className: 'editable'
+            },
             <?php }else{ ?> {
+                // INI KOLOM TEKS BIASA LAINNYA
                 data: "<?=$row->name;?>",
+                defaultContent: "", // Anti-error kalau data telat
                 className: 'editable'
             },
             <?php } }} ?>
