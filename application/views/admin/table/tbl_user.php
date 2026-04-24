@@ -394,7 +394,7 @@ $(document).ready(function() {
                 ]
             },
             <?php }
-            if ($get_o->import_level == 'yes') { ?>
+            if ($get_o->import_level == 'yes') { ?>,
 
             {
                 text: "<span class='text-green'>Import CSV</span>",

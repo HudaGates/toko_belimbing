@@ -147,13 +147,13 @@ $(document).ready(function() {
         table: "#example",
         fields: [ 
           <?php foreach($data_field as $row){
-              if($row->name=='suffix'){ ?>
+              if($row->name=='suffix'){ ?>,
             {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
                 type: "text"
             },
-          <?php }else{ ?>
+          <?php }else{ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
@@ -251,7 +251,7 @@ $(document).ready(function() {
         },
         colReorder: true,
         buttons: [
-            <?php if($a_level=='yes'){ ?>
+            <?php if($a_level=='yes'){ ?>,
             { 
               extend: "create",
               text: "<span class='text-green'>New</span>",
@@ -261,7 +261,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
             },
-            <?php } if($e_level=='yes'){ ?>
+            <?php } if($e_level=='yes'){ ?>,
             { 
               extend: "edit",
               text: "<span class='text-green'>Edit</span>",
@@ -271,7 +271,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
            },
-            <?php } if($d_level=='yes'){ ?>
+            <?php } if($d_level=='yes'){ ?>,
             { 
               extend: "remove",
               text: "<span class='text-red'>Delete</span>",
@@ -281,7 +281,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
             },
-            <?php } if($ex_level=='yes'){?>
+            <?php } if($ex_level=='yes'){?>,
             {
                 extend: 'collection',
                 text: "<span class='text-green'>Export</span>",
@@ -293,7 +293,7 @@ $(document).ready(function() {
                     'print'
                 ]
             },
-            <?php } if($i_level=='yes'){ ?>
+            <?php } if($i_level=='yes'){ ?>,
             {
                 text: 'Import Excel',
                 titleAttr: 'Import Planning',
@@ -301,13 +301,13 @@ $(document).ready(function() {
                     formupload('<?=$table;?>');
                 }
             },
-            <?php } ?>
+            <?php } ?>,
             {
                 extend: 'selectAll',
                 className: 'btn-space text-green'
             },
             
-            <?php if($del_all=='yes'){  ?>
+            <?php if($del_all=='yes'){  ?>,
                {
                 text: '<i class="fas fa-trash-alt  text-red"></i>',
                 className: 'btn btn-default',
@@ -316,9 +316,9 @@ $(document).ready(function() {
                     del_all('<?=$table;?>');
                 }
             },
-             <?php } ?>
+             <?php } ?>,
              'selectNone',
-          <?php if($p_level=='yes'){ ?>  
+          <?php if($p_level=='yes'){ ?> , 
             {
                  extend: "selectedSingle",
                  text: "<i class='fas fa-print text-green'></i>",

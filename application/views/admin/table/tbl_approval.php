@@ -749,7 +749,7 @@ $(document).ready(function() {
                 className: 'btn-space text-green'
             },
             'selectNone',
-            <?php if ($get_o->delete_level == 'yes') { ?> 
+            <?php if ($get_o->delete_level == 'yes') { ?> ,
             {
                 extend: "remove",
                 text: '<i class="fas fa-trash text-red"></i>',

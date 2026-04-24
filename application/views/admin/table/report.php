@@ -140,37 +140,37 @@ $(document).ready(function() {
         table: "#example",
         fields: [ 
           <?php foreach($data_field as $row){
-              if($row->name=='id'){ ?>
+              if($row->name=='id'){ ?>,
             {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
                 type: "hidden"
             },
-          <?php }elseif($row->name=='update_by'){ ?>
+          <?php }elseif($row->name=='update_by'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
                 type: "hidden",
             },
-          <?php }elseif($row->name=='update_time'){ ?>
+          <?php }elseif($row->name=='update_time'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
                 type: "hidden",
             },
-             <?php }elseif($row->type=='text'){ ?>
+             <?php }elseif($row->type=='text'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
                 type: "text",
             },
-            <?php }elseif($row->type=='char'){ ?>
+            <?php }elseif($row->type=='char'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
                 type: "select",
             },
-          <?php }elseif($row->type=='year'){ ?>
+          <?php }elseif($row->type=='year'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
@@ -179,7 +179,7 @@ $(document).ready(function() {
                 format: 'YYYY',
                
             },
-          <?php }elseif($row->type=='date'){ ?>
+          <?php }elseif($row->type=='date'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
@@ -188,7 +188,7 @@ $(document).ready(function() {
                 format: 'YYYY-MM-DD',
                
             },
-          <?php }elseif($row->type=='datetime'){ ?>
+          <?php }elseif($row->type=='datetime'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
@@ -202,7 +202,7 @@ $(document).ready(function() {
                 }
                
             },
-           <?php }elseif($row->type=='time'){ ?>
+           <?php }elseif($row->type=='time'){ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
@@ -215,7 +215,7 @@ $(document).ready(function() {
                 }
                
             },
-            <?php }else{ ?>
+            <?php }else{ ?>,
              {
                 label: "<?=$row->name;?>:",
                 name: "<?=$row->name;?>",
@@ -293,7 +293,7 @@ $(document).ready(function() {
                     return '<input type="checkbox">';
                 }
             },
-            <?php if($table=='view_mon_plc'){ ?>         
+            <?php if($table=='view_mon_plc'){ ?>  ,       
             {
               data:'id',
               className:'text-center',
@@ -302,8 +302,8 @@ $(document).ready(function() {
                   return type==='display'?
                   '<button class="btn btn-sm  btn-outline-danger" onclick="cutoff('+data+',\'' + xx + '\');">Cut Off</button>':data;
               }
-            },
-          <?php } ?>
+            }
+          <?php } ?>,
             <?php foreach($data_field as $row){ 
               if($row->name=='update_time'){
               ?>
@@ -320,7 +320,7 @@ $(document).ready(function() {
         },
         colReorder: true,
         buttons: [
-            <?php if($get_o->add_level=='yes' and $table=='tbl_report_production'){ ?>
+            <?php if($get_o->add_level=='yes' and $table=='tbl_report_production'){ ?>,
               {
                 text: 'Add Data',
                 className: 'btn btn-cs text-green',
@@ -329,7 +329,7 @@ $(document).ready(function() {
                     form_add_report_production('<?=$table;?>');
                 }
               },
-            <?php } if($get_o->edit_level=='yes'){ ?>
+            <?php } if($get_o->edit_level=='yes'){ ?>,
             { 
               extend: "edit",
               text: "<span class='text-green'>Edit</span>",
@@ -339,7 +339,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
            },
-            <?php } if($get_o->delete_level=='yes'){ ?>
+            <?php } if($get_o->delete_level=='yes'){ ?>,
             { 
               extend: "remove",
               text: "<span class='text-red'>Delete</span>",
@@ -349,7 +349,7 @@ $(document).ready(function() {
                     '<span class="btn btn-outline-success">Submit</span>',
                 ]
             },
-            <?php } if($get_o->export_level=='yes'){?>
+            <?php } if($get_o->export_level=='yes'){?>,
             {
                 extend: 'collection',
                 text: "<span class='text-green'>Export</span>",
@@ -361,7 +361,7 @@ $(document).ready(function() {
                     'print'
                 ]
             },
-            <?php } if($get_o->import_level=='yes'){ ?>
+            <?php } if($get_o->import_level=='yes'){ ?>,
             /*{
                 text: 'Import Excel',
                 action: function () {
@@ -377,13 +377,13 @@ $(document).ready(function() {
                 uploadEditor.field('csv').input().val('');
               }
             },
-            <?php } ?>
+            <?php } ?>,
             {
                 extend: 'selectAll',
                 className: 'btn-space text-green'
             },
             'selectNone',
-          <?php if($get_o->print_level=='yes'){ ?>  
+          <?php if($get_o->print_level=='yes'){ ?>,  
             {
                  extend: "selectedSingle",
                  text: "<i class='fas fa-print text-green'></i>",
@@ -395,7 +395,7 @@ $(document).ready(function() {
                     print_l(data.id);
                 }
             },
-             <?php } if($get_o->print_level=='yes' and $table!='tbl_history_labelprod'  and $table!='tbl_history_assy'){ ?>  
+             <?php } if($get_o->print_level=='yes' and $table!='tbl_history_labelprod'  and $table!='tbl_history_assy'){ ?>,  
             {
                 text: '<i class="fas fa-print text-green"></i>',
                  className: 'btn btn-default',
@@ -404,7 +404,7 @@ $(document).ready(function() {
                     print_all('<?=$table;?>');
                 }
             },
-            <?php }if($get_o->del_all=='yes'){  ?>
+            <?php }if($get_o->del_all=='yes'){  ?>,
                {
                 text: '<i class="fas fa-trash-alt  text-red"></i>',
                 className: 'btn btn-default',
