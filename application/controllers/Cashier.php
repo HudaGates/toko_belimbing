@@ -50,7 +50,9 @@ function index(){
 
   $qtc=$this->db->query("SELECT customer_name from tbl_master_customer order by customer_name asc")->result();
   $qt = $this->db->get('tbl_title', 1)->row();
-  $qmp=$this->db->query("SELECT * from tbl_master_product group by product_name order by id asc")->result();
+  
+  // FIX: HANYA TAMPILKAN BARANG ACTIVE DI HALAMAN DEPAN
+  $qmp=$this->db->query("SELECT * from tbl_master_product WHERE status = 'Active' group by product_name order by id asc")->result();
   
   // ===========================================================================
   // FIX: PERBAIKAN LOGIKA PEMBUATAN KERANJANG BARU
@@ -87,7 +89,10 @@ function openviewcart(){
 
   $qt = $this->db->get('tbl_title', 1)->row();
   $datapos=$this->db->query("SELECT * from tbl_master_posting group by pos_level order by id asc")->result();
-  $qmp=$this->db->query("SELECT * from tbl_master_product group by product_name order by id asc")->result();
+  
+  // FIX: HANYA TAMPILKAN BARANG ACTIVE SAAT BUKA KERANJANG LAMA
+  $qmp=$this->db->query("SELECT * from tbl_master_product WHERE status = 'Active' group by product_name order by id asc")->result();
+  
   $qhc=$this->db->query("SELECT * from tbl_history_sale where id= ". $cartid . "")->row();
  
   $data=array(
@@ -103,9 +108,12 @@ function openviewcart(){
 
 function search(){
   $product=$this->input->post('product');
-  $qmp=$this->db->query("SELECT * from tbl_master_product where product_code like '%".trim($product) . "%' group by product_name order by id asc limit 12")->result();
+  
+  // FIX: HANYA CARI BARANG ACTIVE BERDASARKAN KODE
+  $qmp=$this->db->query("SELECT * from tbl_master_product where product_code like '%".trim($product) . "%' AND status = 'Active' group by product_name order by id asc limit 12")->result();
   if(empty($qmp)){
-    $qmp=$this->db->query("SELECT * from tbl_master_product where product_name like '%".trim($product) . "%' group by product_name order by id asc limit 12")->result();
+    // FIX: HANYA CARI BARANG ACTIVE BERDASARKAN NAMA
+    $qmp=$this->db->query("SELECT * from tbl_master_product where product_name like '%".trim($product) . "%' AND status = 'Active' group by product_name order by id asc limit 12")->result();
   }
   $data=array(
         'qmp'=>$qmp
@@ -115,7 +123,9 @@ function search(){
 
 function tagsearch(){
   $tag=$this->input->post('tag');
-  $qmp=$this->db->query("SELECT * from tbl_master_product where category_id like '%".trim($tag) . "%' group by product_name order by id asc")->result();
+  
+  // FIX: HANYA CARI BARANG ACTIVE BERDASARKAN TAG/KATEGORI
+  $qmp=$this->db->query("SELECT * from tbl_master_product where category_id like '%".trim($tag) . "%' AND status = 'Active' group by product_name order by id asc")->result();
  
   $data=array(
         'qmp'=>$qmp
@@ -152,7 +162,8 @@ function additem(){
     $product_code = trim($this->input->post('sku'));
     $quantity_add = $this->input->post('quantity') ? intval($this->input->post('quantity')) : 1;
 
-    $qmp = $this->db->query("SELECT product_code, product_name, price, discount, SUM(stock) as stock FROM tbl_master_product WHERE product_code = '".$this->db->escape_str($product_code)."' GROUP BY product_code")->row();
+    // FIX: SCAN BARCODE HANYA BISA JIKA BARANG ACTIVE
+    $qmp = $this->db->query("SELECT product_code, product_name, price, discount, SUM(stock) as stock FROM tbl_master_product WHERE product_code = '".$this->db->escape_str($product_code)."' AND status = 'Active' GROUP BY product_code")->row();
     
     $cd = $this->db->get_where('tbl_history_sale_detail', array('sale_id' => $cartid, 'product_code' => $product_code))->row();
     
@@ -164,7 +175,7 @@ function additem(){
     if(empty($qts) || $qts->status == 'done'){
         echo json_encode(array('success' => false, 'message' => 'TRANSAKSI TELAH SELESAI'));
     } else if(empty($qmp)){
-        echo json_encode(array('success' => false, 'message' => 'SKU NOT FOUND'));
+        echo json_encode(array('success' => false, 'message' => 'SKU NOT FOUND / ITEM NON-ACTIVE')); // Info tambahan jika barang non-active
     } else if($qmp->stock <= 0){
         echo json_encode(array('success' => false, 'message' => 'STOCK HABIS')); 
     } else if(($current_qty + $quantity_add) > $qmp->stock){
@@ -222,24 +233,38 @@ function edititem(){
   $quantity=$this->input->post('qty');
   
   $cd = $this->db->get_where('tbl_history_sale_detail', array('id' =>$id))->row();
-  $qty= intval($quantity);
-      $stbc = intval($quantity)* floatval($cd->unit_price);
-      $st =  $stbc;
-      
+  $qty = intval($quantity);
+  
+  // ==========================================
+  // FIX: PENGECEKAN STOK SAAT EDIT QTY DI KERANJANG
+  // ==========================================
+  $qmp = $this->db->get_where('tbl_master_product', array('product_code' => $cd->product_code))->row();
+  
+  // Jika Qty yang diketik kasir LEBIH BESAR dari stok di gudang
+  if($qty > $qmp->stock) {
       $data = array(
-        'quantity' => $qty,
-        'sub_total' => $st,
+        'success' => false,
+        'message' => 'Stok tidak cukup! Sisa stok: ' . $qmp->stock
       );
+      echo json_encode($data);
+      return; // Hentikan proses, jangan dilanjut!
+  }
+  // ==========================================
+
+  $stbc = $qty * floatval($cd->unit_price);
+  $st =  $stbc;
       
-  $qd = $this->db->update('tbl_history_sale_detail',  $data, array('id'=> $cd->id, ));
+  $data = array(
+    'quantity' => $qty,
+    'sub_total' => $st,
+  );
+      
+  $qd = $this->db->update('tbl_history_sale_detail',  $data, array('id'=> $cd->id));
+  
   if($qd){
-    $data = array(
-      'success' => true
-    );
+    $data = array('success' => true);
   } else {
-    $data = array(
-      'success' => false
-    );
+    $data = array('success' => false);
   }
 
   echo json_encode($data);
@@ -365,7 +390,8 @@ $qd = $this->db->update('tbl_history_sale',  $data, array('id'=> $cartid, ));
     $qmp=$this->db->query("SELECT * from tbl_history_sale_detail where sale_id= '". $cartid . "' ")->result();
 
     foreach($qmp as $key){
-      $this->db->query("UPDATE tbl_master_product SET stock=stock-".$key->quantity." where product_code= '". $key->product_code . "' ");
+      // FIX: GUNAKAN GREATEST(0, ...) AGAR MATEMATIKANYA MENTOK DI ANGKA 0, TIDAK BISA MINUS
+      $this->db->query("UPDATE tbl_master_product SET stock = GREATEST(0, stock - ".$key->quantity.") WHERE product_code= '". $key->product_code . "' ");
     }
   } else {
     $data = array(

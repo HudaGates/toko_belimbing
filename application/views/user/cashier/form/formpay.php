@@ -117,11 +117,19 @@ function paySubmit() {
         dataType: 'json',
         success: function(res) {
             if (res.success == true) {
-                printReceiptForm();
+                // 1. Tutup pop-up pembayaran
                 $("#modalxl").modal('hide');
+                
+                // 2. Panggil fungsi Iframe Siluman yang ada di halaman utama (home.php)
+                if(typeof printReceipt === "function") {
+                    printReceipt(); 
+                }
+
+                // 3. Jeda 1.5 Detik biar pop-up print browser muncul dulu, baru refresh halamannya
                 setTimeout(function() {
                     window.location.href = "<?=base_url('cashier?api='.$this->id_t); ?>";
-                }, 500);
+                }, 1500);
+                
             } else {
                 swal("Failed!", "Error processing payment.", "error");
                 $('.btn-primary').prop('disabled', false).text("<?= lang('btn_pay'); ?>");
@@ -136,10 +144,5 @@ function paySubmit() {
 
 function cancel() {
     $("#modalxl").modal('hide');
-}
-
-function printReceiptForm() {
-    var cartid = $('#cartid').val();
-    window.open("<?=base_url('cashier/print_receipt');?>?cartid=" + cartid + "&api=<?=$this->id_t;?>", "_blank");
 }
 </script>

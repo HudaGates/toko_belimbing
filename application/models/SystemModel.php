@@ -782,17 +782,7 @@ class SystemModel extends CI_Model
             Editor::inst( $this->editorDb, $table)
             ->fields(
                 Field::inst( 'id' ),
-                Field::inst( 'tabel_name' )
-                 ->options( Options::inst()
-                        ->table( 'tbl_menu')
-                        ->value( 'tabel')
-                        ->label( 'tabel')
-                        ->where( function ($q){
-                                $q->where( 'parent', 'backup' );
-                                $q->where( 'child', '-','!=' );
-                        })
-                    )
-                ->validator('Validate::dbValues'),
+                Field::inst( 'tabel_name' )->validator( 'Validate::notEmpty' ),
                 Field::inst('date_field')->validator( 'Validate::notEmpty' ),
                 Field::inst('start_value')->validator( 'Validate::notEmpty' ),
                 Field::inst('end_value')->validator( 'Validate::notEmpty' ),
