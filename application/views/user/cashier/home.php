@@ -777,13 +777,13 @@ function clearCart() {
         if(!cartid || cartid === '') return;
 
         swal({
-            title: "<?= lang('swal_clear_title'); ?>", // <-- Pastikan pakai ini
-            text: "<?= lang('swal_clear_text'); ?>",   // <-- Pastikan pakai ini
+            title: "<?= lang('swal_clear_title'); ?>", 
+            text: "<?= lang('swal_clear_text'); ?>",   
             type: "warning",
             showCancelButton: true,
             confirmButtonClass: 'btn-danger',
-            confirmButtonText: "<?= lang('swal_clear_confirm'); ?>", // <-- Pastikan pakai ini
-            cancelButtonText: "<?= lang('swal_clear_cancel'); ?>",   // <-- Pastikan pakai ini
+            confirmButtonText: "<?= lang('swal_clear_confirm'); ?>", 
+            cancelButtonText: "<?= lang('swal_clear_cancel'); ?>",   
             closeOnConfirm: false
         },
         function(isConfirm) {
@@ -878,10 +878,23 @@ function clearCart() {
         });
     }
 
+    // ========================================================
+    // FIX: JURUS IFRAME SILUMAN UNTUK PRINT STRUK TANPA TAB BARU
+    // ========================================================
     function printReceipt() {
         var cartid = $('#cartid').val();
-        window.open("<?=base_url('cashier/print_receipt');?>?cartid=" + cartid + "&api=<?=$this->id_t;?>", "_blank");
+        
+        // 1. Hapus iframe lama (jika ada) biar ngga numpuk di background
+        $('#print-iframe').remove();
+        
+        // 2. Buat URL ke halaman struk
+        var url_struk = "<?=base_url('cashier/print_receipt');?>?cartid=" + cartid + "&api=<?=$this->id_t;?>";
+        
+        // 3. Suntikkan Iframe "Siluman" (tak kasat mata) ke dalam body HTML
+        // Pake trik position absolute agar benar-benar tersembunyi
+        $('body').append('<iframe id="print-iframe" style="position:absolute; width:0; height:0; border:0;" src="' + url_struk + '"></iframe>');
     }
+    // ========================================================
 
     function historysale() {
         $.ajax({

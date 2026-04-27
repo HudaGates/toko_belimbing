@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Receipt</title>
 </head>
 <style>
 html,
@@ -15,7 +15,6 @@ body {
     margin: 0px;
     font-family: arial;
     color: #000;
-    /* text-align: center; */
     font-size: 8pt;
 }
 </style>
@@ -40,9 +39,7 @@ body {
             </td>
         </tr>
         <tr>
-            <td>
-                <hr>
-            </td>
+            <td><hr></td>
         </tr>
         <tr>
             <td>
@@ -55,63 +52,35 @@ body {
                     <tr>
                         <td style="width: 20%;">CUSTOMER</td>
                         <td>:</td>
-                        <td>
-                            <?= $qs->customer_name?>
-                        </td>
+                        <td><?= $qs->customer_name?></td>
                     </tr>
                     <tr>
                         <td style="width: 20%;">TRX. DATE</td>
                         <td>:</td>
-                        <td>
-                            <?= $qs->update_time?>
-                        </td>
+                        <td><?= $qs->update_time?></td>
                     </tr>
                     <tr>
                         <td style="width: 20%;">CASHIER</td>
                         <td>:</td>
-                        <td>
-                            <?= $qs->cashier?>
-                        </td>
+                        <td><?= $qs->cashier?></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td>
-                <hr>
-            </td>
+            <td><hr></td>
         </tr>
         <tr>
             <td>
                 <table border="0" style="width: 100%;border-spacing: 0px;border-collapse: collapse; text-align: left;">
                     <thead style="background-color:#ccc">
-
                         <tr>
-                            <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;"
-                                class="text-bold;">
-                                No
-                            </th>
-                            <th style="width: 15%; padding: 0px;font-size: 100%;vertical-align: middle;"
-                                class="text-bold;">
-                                SKU
-                            </th>
-                            <th style="padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
-                                Product Name
-                            </th>
-
-                            <th style="width: 20%;padding: 0px;font-size: 100%;vertical-align: middle;"
-                                class="text-bold;">
-                                Harga
-                            </th>
-                            <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;"
-                                class="text-bold;">
-                                Qty
-                            </th>
-                            <th style="text-align: right; width: 20%; padding: 0px;font-size: 100%;vertical-align: middle;"
-                                class="text-bold;">
-                                Sub Total
-                            </th>
-
+                            <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;">No</th>
+                            <th style="width: 15%; padding: 0px;font-size: 100%;vertical-align: middle;">SKU</th>
+                            <th style="padding: 0px;font-size: 100%;vertical-align: middle;">Product Name</th>
+                            <th style="width: 20%;padding: 0px;font-size: 100%;vertical-align: middle;">Harga</th>
+                            <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;">Qty</th>
+                            <th style="text-align: right; width: 20%; padding: 0px;font-size: 100%;vertical-align: middle;">Sub Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,27 +88,12 @@ body {
                         $i = 1;
                         foreach ($qsd as $key) { ?>
                         <tr>
-                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
-                                <?=$i++; ?>
-                            </td>
-                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
-                                <?=$key->product_code ?>
-                            </td>
-                            <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
-                                <?=$key->product_name ?>
-                            </td>
-
-                            <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
-                                <?='Rp ' . number_format($key->unit_price) ?>
-                            </td>
-                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
-                                <?=$key->quantity ?>
-                            </td>
-                            <td style="text-align: right; padding: 5px;font-size: 100%;vertical-align: middle;"
-                                class="text-left;">
-                                <?='Rp ' . number_format($key->sub_total) ?>
-                            </td>
-
+                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$i++; ?></td>
+                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$key->product_code ?></td>
+                            <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$key->product_name ?></td>
+                            <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?='Rp ' . number_format($key->unit_price) ?></td>
+                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$key->quantity ?></td>
+                            <td style="text-align: right; padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?='Rp ' . number_format($key->sub_total) ?></td>
                         </tr>
                         <?php }?>
                     </tbody>
@@ -147,9 +101,7 @@ body {
             </td>
         </tr>
         <tr>
-            <td>
-                <hr>
-            </td>
+            <td><hr></td>
         </tr>
         <tr>
             <td style="text-align: right;">
@@ -170,23 +122,18 @@ body {
             </td>
         </tr>
         <tr>
-            <td>
-                <hr>
-            </td>
+            <td><hr></td>
         </tr>
         <tr>
-            <td>
-                NOTE: Barang yang sudah dibeli tidak dapat dikembalikan
-            </td>
+            <td>NOTE: Barang yang sudah dibeli tidak dapat dikembalikan</td>
         </tr>
     </table>
 
-
-
     <script type="text/javascript">
-    setTimeout(function() {
+    // FIX: Pastikan seluruh konten struk ke-load dulu baru muncul pop-up print
+    window.onload = function() {
         window.print();
-    }, 100);
+    };
     </script>
 </body>
 

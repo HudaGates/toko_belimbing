@@ -164,6 +164,12 @@ $(document).ready(function() {
                         name: "<?=$row->name;?>",
                         type: "hidden",
                     },
+                  <?php }elseif($row->name=='tabel_name'){ ?>
+                     {
+                        label: "TABEL NAME:",
+                        name: "<?=$row->name;?>",
+                        type: "text",
+                    },
                      <?php }elseif($row->type=='text'){ ?>
                      {
                         label: "<?=$row->name;?>:",
@@ -542,13 +548,22 @@ function execute(id,tabel_name){
                         title: ""+data.status,
                         text: "",
                         type: "warning",
-                        timer: 1200,
+                        timer: 2000,
                         showConfirmButton: false
                       });
                   }
+                },
+                // ==========================================
+                // PENANGKAP ERROR (BIAR GAK NGE-GHOSTING)
+                // ==========================================
+                error: function(xhr, status, error) {
+                    swal(
+                        "Gagal Dieksekusi!", 
+                        "Tabel " + tabel_name + " tidak ditemukan di database, atau settingan database gudang belum benar.", 
+                        "error"
+                    );
                 }
-                 
-
+                // ==========================================
               });
         } );            
     }
