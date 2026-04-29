@@ -25,10 +25,13 @@ body {
             <td>
                 <table border="0" style="width: 100%;border-spacing: 0px;border-collapse: collapse;">
                     <tr>
-                        <td style="width: 5%; font-size: 150%; font-weight: bold">LOGO</td>
-                        <td><br></td>
-                        <td>
-                            <?= $qt->owner?> <br>
+                        <!-- ZettBOT: Bagian LOGO Diubah di Sini -->
+                        <td style="width: 80px; text-align: left; vertical-align: top;">
+                            <img src="<?= base_url('assets/img/toko_belimbing.png'); ?>" alt="Logo Toko" style="max-width: 80px; height: auto; filter: grayscale(100%);">
+                        </td>
+                        <td style="width: 10px;"><br></td>
+                        <td style="vertical-align: top;">
+                            <strong style="font-size: 120%;"><?= $qt->owner?></strong> <br>
                             <?= $qt->address?>
                             <br>
                             <?= $qt->tlp?>
@@ -39,7 +42,7 @@ body {
             </td>
         </tr>
         <tr>
-            <td><hr></td>
+            <td><hr style="border: 0; border-top: 1px dashed #000; margin: 10px 0;"></td>
         </tr>
         <tr>
             <td>
@@ -68,19 +71,19 @@ body {
             </td>
         </tr>
         <tr>
-            <td><hr></td>
+            <td><hr style="border: 0; border-top: 1px dashed #000; margin: 10px 0;"></td>
         </tr>
         <tr>
             <td>
                 <table border="0" style="width: 100%;border-spacing: 0px;border-collapse: collapse; text-align: left;">
-                    <thead style="background-color:#ccc">
+                    <thead style="border-bottom: 1px solid #000;">
                         <tr>
-                            <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;">No</th>
-                            <th style="width: 15%; padding: 0px;font-size: 100%;vertical-align: middle;">SKU</th>
-                            <th style="padding: 0px;font-size: 100%;vertical-align: middle;">Product Name</th>
-                            <th style="width: 20%;padding: 0px;font-size: 100%;vertical-align: middle;">Harga</th>
-                            <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;">Qty</th>
-                            <th style="text-align: right; width: 20%; padding: 0px;font-size: 100%;vertical-align: middle;">Sub Total</th>
+                            <th style="width: 5%; padding: 5px 0px; font-size: 100%; vertical-align: middle;">No</th>
+                            <th style="width: 15%; padding: 5px 0px; font-size: 100%; vertical-align: middle;">SKU</th>
+                            <th style="padding: 5px 0px; font-size: 100%; vertical-align: middle;">Product Name</th>
+                            <th style="width: 20%; padding: 5px 0px; font-size: 100%; vertical-align: middle;">Harga</th>
+                            <th style="width: 5%; padding: 5px 0px; font-size: 100%; vertical-align: middle;">Qty</th>
+                            <th style="text-align: right; width: 20%; padding: 5px 0px; font-size: 100%; vertical-align: middle;">Sub Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,12 +91,12 @@ body {
                         $i = 1;
                         foreach ($qsd as $key) { ?>
                         <tr>
-                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$i++; ?></td>
-                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$key->product_code ?></td>
-                            <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$key->product_name ?></td>
-                            <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?='Rp ' . number_format($key->unit_price) ?></td>
-                            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?=$key->quantity ?></td>
-                            <td style="text-align: right; padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left"><?='Rp ' . number_format($key->sub_total) ?></td>
+                            <td style="padding: 5px 0px; font-size: 100%; vertical-align: middle;" class="text-left"><?=$i++; ?></td>
+                            <td style="padding: 5px 0px; font-size: 100%; vertical-align: middle;" class="text-left"><?=$key->product_code ?></td>
+                            <td style="padding: 5px 0px; font-size: 100%; vertical-align: middle;" class="text-left"><?=$key->product_name ?></td>
+                            <td style="padding: 5px 0px; font-size: 100%; vertical-align: middle;" class="text-left"><?='Rp ' . number_format($key->unit_price) ?></td>
+                            <td style="padding: 5px 0px; font-size: 100%; vertical-align: middle;" class="text-left"><?=$key->quantity ?></td>
+                            <td style="text-align: right; padding: 5px 0px; font-size: 100%; vertical-align: middle;" class="text-left"><?='Rp ' . number_format($key->sub_total) ?></td>
                         </tr>
                         <?php }?>
                     </tbody>
@@ -101,31 +104,31 @@ body {
             </td>
         </tr>
         <tr>
-            <td><hr></td>
+            <td><hr style="border: 0; border-top: 1px solid #000; margin: 10px 0;"></td>
         </tr>
         <tr>
             <td style="text-align: right;">
                 <table style="width: 100%;" border="0">
                     <tr>
-                        <td style="width: 70%;">Jumlah Tagihan :</td>
-                        <td><?php echo 'Rp ' . number_format($qs->total_amount); ?></td>
+                        <td style="width: 70%; text-align: right;">Jumlah Tagihan :</td>
+                        <td style="text-align: right;"><?php echo 'Rp ' . number_format($qs->total_amount); ?></td>
                     </tr>
                     <tr>
-                        <td style="width: 70%;">Uang Tunai :</td>
-                        <td><?php echo 'Rp ' . number_format($qs->pay_amount); ?></td>
+                        <td style="width: 70%; text-align: right;">Uang Tunai :</td>
+                        <td style="text-align: right;"><?php echo 'Rp ' . number_format($qs->pay_amount); ?></td>
                     </tr>
                     <tr>
-                        <td>Kembalian :</td>
-                        <td><?php echo 'Rp ' . number_format($qs->pay_amount - $qs->total_amount); ?></td>
+                        <td style="width: 70%; text-align: right;">Kembalian :</td>
+                        <td style="text-align: right;"><?php echo 'Rp ' . number_format($qs->pay_amount - $qs->total_amount); ?></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td><hr></td>
+            <td><hr style="border: 0; border-top: 1px dashed #000; margin: 10px 0;"></td>
         </tr>
         <tr>
-            <td>NOTE: Barang yang sudah dibeli tidak dapat dikembalikan</td>
+            <td style="text-align: center; padding-top: 5px;">NOTE: Barang yang sudah dibeli tidak dapat dikembalikan</td>
         </tr>
     </table>
 
