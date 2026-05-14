@@ -95,11 +95,27 @@ class Home extends MY_Controller {
         $this_month = date('m');
         $this_year = date('Y');
 
-        // 1. MENGHITUNG 4 KOTAK SUMMARY
+        // 1. MENGHITUNG KOTAK SUMMARY (Hari, Minggu, Tahun tetap fixed)
         $q_hari = $this->db->query("SELECT SUM(total_amount) as total FROM tbl_history_sale WHERE status='done' AND DATE(update_time) = '$today'")->row();
         $q_minggu = $this->db->query("SELECT SUM(total_amount) as total FROM tbl_history_sale WHERE status='done' AND YEARWEEK(update_time, 1) = YEARWEEK(CURDATE(), 1)")->row();
-        $q_bulan = $this->db->query("SELECT SUM(total_amount) as total FROM tbl_history_sale WHERE status='done' AND MONTH(update_time) = '$this_month' AND YEAR(update_time) = '$this_year'")->row();
         $q_tahun = $this->db->query("SELECT SUM(total_amount) as total FROM tbl_history_sale WHERE status='done' AND YEAR(update_time) = '$this_year'")->row();
+
+        // --- LOGIKA DINAMIS KOTAK KE-3 (Omset Bulanan / Omset Custom Terpilih) ---
+        if ($periode == 'custom' && !empty($start_date) && !empty($end_date)) {
+            // Hitung total di antara tanggal yang dipilih boss
+            $q_custom = $this->db->query("SELECT SUM(total_amount) as total FROM tbl_history_sale WHERE status='done' AND DATE(update_time) >= '$start_date' AND DATE(update_time) <= '$end_date'")->row();
+            
+            $total_display = $q_custom->total;
+            $label_display = "Omset Terpilih"; // Label berubah
+            $icon_display = "fa-filter";       // Icon berubah
+        } else {
+            // Balik ke mode normal "Bulan Ini"
+            $q_bulan = $this->db->query("SELECT SUM(total_amount) as total FROM tbl_history_sale WHERE status='done' AND MONTH(update_time) = '$this_month' AND YEAR(update_time) = '$this_year'")->row();
+            
+            $total_display = $q_bulan->total;
+            $label_display = "Omset Bulan Ini";
+            $icon_display = "fa-calendar-alt";
+        }
 
         // 2. MENGAMBIL DATA UNTUK TABEL
         $this->db->select('*');
@@ -158,11 +174,13 @@ class Home extends MY_Controller {
 
         // 4. KEMBALIKAN DATA KE JAVASCRIPT (JSON)
         echo json_encode(array(
-            'harian'   => 'Rp ' . number_format((float)$q_hari->total, 0, ',', '.'),
-            'mingguan' => 'Rp ' . number_format((float)$q_minggu->total, 0, ',', '.'),
-            'bulanan'  => 'Rp ' . number_format((float)$q_bulan->total, 0, ',', '.'),
-            'tahunan'  => 'Rp ' . number_format((float)$q_tahun->total, 0, ',', '.'),
-            'html_tabel' => $html_tabel
+            'harian'      => 'Rp ' . number_format((float)$q_hari->total, 0, ',', '.'),
+            'mingguan'    => 'Rp ' . number_format((float)$q_minggu->total, 0, ',', '.'),
+            'bulanan'     => 'Rp ' . number_format((float)$total_display, 0, ',', '.'), // Output total dinamis
+            'tahunan'     => 'Rp ' . number_format((float)$q_tahun->total, 0, ',', '.'),
+            'label_bulan' => $label_display, // Melempar judul label
+            'icon_bulan'  => $icon_display,  // Melempar icon
+            'html_tabel'  => $html_tabel
         ));
     }
 }

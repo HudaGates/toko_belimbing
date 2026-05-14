@@ -44,7 +44,6 @@
                     <div class="col-md-8 d-flex justify-content-end align-items-center" style="gap: 12px;">
                         
                         <div class="input-group input-group-sm shadow-sm" style="width: 180px; border-radius: 6px;">
-                            <!-- ZettBOT: Mengubah placeholder agar relevan dengan pencarian kasir/customer -->
                             <input type="text" id="search_keyword" class="form-control border-right-0" placeholder="Cari Kasir/Customer..." onkeyup="delayLoadDashboard()">
                             <div class="input-group-append">
                                 <span class="input-group-text bg-white text-muted border-left-0"><i class="fas fa-search"></i></span>
@@ -93,7 +92,7 @@
                     <div class="col-md-3">
                         <div class="card bg-warning text-dark shadow-sm" style="border-radius: 10px;">
                             <div class="card-body p-3">
-                                <h6 class="mb-1"><i class="fas fa-calendar-alt mr-1"></i> Omset Bulan Ini</h6>
+                                <h6 class="mb-1"><i id="icon_bulanan" class="fas fa-calendar-alt mr-1"></i> <span id="label_bulanan">Omset Bulan Ini</span></h6>
                                 <h3 id="omset_bulanan" class="font-weight-bold mb-0">Rp 0</h3>
                             </div>
                         </div>
@@ -112,7 +111,6 @@
                     <table class="table table-hover table-bordered table-sm mb-0" style="font-size: 14px;">
                         <thead class="bg-light" style="position: sticky; top: 0; z-index: 2; box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);">
                             <tr>
-                                <!-- ZettBOT: Penyesuaian Kolom Tabel menjadi 5 Kolom Sesuai Request -->
                                 <th width="5%" class="text-center" style="background-color: #f8f9fa;">No</th>
                                 <th width="20%" style="background-color: #f8f9fa;">Tanggal Trx</th>
                                 <th width="25%" style="background-color: #f8f9fa;">Nama Kasir</th>
@@ -181,8 +179,12 @@ function loadDashboard() {
         success: function(res) {
             $('#omset_harian').text(res.harian);
             $('#omset_mingguan').text(res.mingguan);
-            $('#omset_bulanan').text(res.bulanan);
             $('#omset_tahunan').text(res.tahunan);
+            
+            // ZettBOT: Update Nilai, Label, dan Icon kotak kuning secara dinamis
+            $('#omset_bulanan').text(res.bulanan);
+            $('#label_bulanan').text(res.label_bulan);
+            $('#icon_bulanan').removeClass().addClass('fas mr-1 ' + res.icon_bulan);
 
             $('#tabel_laporan').html(res.html_tabel).hide().fadeIn('fast');
         },
