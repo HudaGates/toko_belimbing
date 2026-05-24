@@ -255,6 +255,7 @@ function edititem(){
   $st =  $stbc;
       
   $data = array(
+    
     'quantity' => $qty,
     'sub_total' => $st,
   );
@@ -364,14 +365,19 @@ function paysubmit(){
     if(trim($customer_name) == '') {
         $customer_name = "Umum";
     }
-    $customer_id = 0;
+    $customer_id = 1;
+    $customer_name = ($this->input->post('input_nama_manual') != '') 
+                     ? $this->input->post('input_nama_manual') 
+                     : "Umum";
   }else{
     $customer_id = $qtc->id;
+    $customer_name = $qtc->customer_name;
   }
-
+$invoice_code = 'INV-' . date('YmdHis') . '' . $cartid;
 
   $data = array(
     'customer_id' => $customer_id,
+    'invoice_code' => $invoice_code,
     'customer_name' => $customer_name,
     'total_amount' => $amount,
     'pay_amount' => $pay_amount,

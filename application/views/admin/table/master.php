@@ -250,12 +250,12 @@ $(document).ready(function() {
                 name: "<?=$row->name;?>",
                 type: "select",
                 options: [{
-                        label: "Male",
-                        value: "m"
+                        label: "Laki-Laki",
+                        value: "L"
                     },
                     {
-                        label: "Female",
-                        value: "f"
+                        label: "Perempuan",
+                        value: "P"
                     }
                 ]
             },

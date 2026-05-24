@@ -506,7 +506,7 @@ class TransactionModel extends CI_Model
                     Field::inst('cashier')->validator('Validate::notEmpty'),
                     Field::inst('customer_id')->validator('Validate::notEmpty'),
                     Field::inst('customer_name')->validator('Validate::notEmpty'),
-                    Field::inst('phone')->validator('Validate::notEmpty'),
+                   // Field::inst('phone')->validator('Validate::notEmpty'),
                     Field::inst('cart_source')->validator('Validate::notEmpty'),
                     Field::inst('total_amount')->validator('Validate::notEmpty'),
                     Field::inst('pay_amount')->validator('Validate::notEmpty'),

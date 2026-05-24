@@ -285,11 +285,33 @@ class MasterModel extends CI_Model
                     Field::inst('customer_code'),
                     Field::inst('customer_name'),
                     Field::inst('gender'),
+<<<<<<< HEAD
                     Field::inst('address'),
                     Field::inst('city'),
                     Field::inst('phone'),
 
 
+=======
+                    //Field::inst('birth_date'),
+                    Field::inst('address'),
+                    Field::inst('city'),
+                    Field::inst('phone'),
+                   // Field::inst('email'),
+                    /*Field::inst('img_customer')
+                    ->upload(
+                        Upload::inst('./assets/customer/__ID__.__EXTN__')
+                            ->db('files', 'id', array(
+                                'filename'    => Upload::DB_FILE_NAME,
+                                'remark'      => 'CUSTOMER',
+                                'filesize'    => Upload::DB_FILE_SIZE,
+                                'web_path'    => Upload::DB_WEB_PATH,
+                                'system_path' => Upload::DB_SYSTEM_PATH
+                            ))
+                            ->validator(Validate::fileSize(1000000, 'Files must be smaller that 1MB'))
+                            ->validator(Validate::fileExtensions(array('jpg'), "Please upload an image jpg"))
+                    )->setFormatter(Format::ifEmpty(null)),
+*/
+>>>>>>> 200bc1a (hudaganteng)
                     Field::inst('update_by')->set(true)->setValue($nama),
                     Field::inst('update_time')->set(true)->setValue(gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7))
                 )
