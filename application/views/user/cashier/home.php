@@ -538,7 +538,7 @@
     $("#input_sku").on('keyup', function(e) {
     if (e.key === 'Enter' || e.keyCode === 13) {
         
-        // Validasi: Jika tidak ada ID keranjang, jangan teruskan proses tambah
+    
         if(!cartid || cartid === '') {
             swal("Peringatan", "Data Keranjang Tidak Ditemukan! Silakan Logout lalu Login kembali.", "warning");
             return;
