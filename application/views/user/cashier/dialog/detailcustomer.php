@@ -23,9 +23,6 @@
                 Phone
             </th>
             <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
-                Email
-            </th>
-            <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
                 Address
             </th>
             <!-- <th style="width: 5%; padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
@@ -55,9 +52,6 @@ foreach ($qhsd as $key) { ?>
 
             <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
                 <?=$key->phone ?>
-            </td>
-            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
-                <?=$key->email ?>
             </td>
             <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
                 <?=$key->address ?>

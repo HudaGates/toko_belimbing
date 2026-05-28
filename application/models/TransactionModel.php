@@ -503,7 +503,6 @@ class TransactionModel extends CI_Model
             Editor::inst($this->editorDb, $table)
                 ->fields(
                     Field::inst('id'),
-                    Field::inst('invoice_code')->validator('Validate::notEmpty'),
                     Field::inst('cashier')->validator('Validate::notEmpty'),
                     Field::inst('customer_id')->validator('Validate::notEmpty'),
                     Field::inst('customer_name')->validator('Validate::notEmpty'),

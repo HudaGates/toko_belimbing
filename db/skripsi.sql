@@ -515,7 +515,6 @@ CREATE TABLE `tbl_history_posting` (
 
 CREATE TABLE `tbl_history_sale` (
   `id` int(11) NOT NULL,
-  `invoice_code` varchar(20) DEFAULT NULL,
   `cashier` varchar(20) DEFAULT NULL,
   `customer_id` varchar(20) DEFAULT NULL,
   `customer_name` varchar(50) DEFAULT NULL,
@@ -3633,7 +3632,6 @@ CREATE TABLE `tbl_master_customer` (
   `customer_code` varchar(30) DEFAULT NULL,
   `customer_name` varchar(50) DEFAULT NULL,
   `gender` char(10) DEFAULT NULL,
-  `birth_date` date DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
   `city` varchar(30) DEFAULT NULL,
   `phone` varchar(15) DEFAULT NULL,

@@ -112,10 +112,10 @@
                         <thead class="bg-light" style="position: sticky; top: 0; z-index: 2; box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);">
                             <tr>
                                 <th width="5%" class="text-center" style="background-color: #f8f9fa;">No</th>
-                                <th width="20%" style="background-color: #f8f9fa;">Tanggal Trx</th>
-                                <th width="25%" style="background-color: #f8f9fa;">Nama Kasir</th>
-                                <th width="25%" style="background-color: #f8f9fa;">Nama Customer</th>
-                                <th width="25%" class="text-right" style="background-color: #f8f9fa;">Total Transaksi</th>
+                                <th width="20%" class ="text-center" style="background-color: #f8f9fa;">Tanggal Transaksi</th>
+                                <th width="25%" class ="text-center" style="background-color: #f8f9fa;">Nama Kasir</th>
+                                <th width="25%" class ="text-center" style="background-color: #f8f9fa;">Nama Customer</th>
+                                <th width="25%" class ="text-center" class="text-right" style="background-color: #f8f9fa;">Total Transaksi</th>
                             </tr>
                         </thead>
                         <tbody id="tabel_laporan">
