@@ -39,14 +39,87 @@
     }
 
     /* Logout button hover */
-    .logout-btn img {
-        cursor: pointer;
-        transition: transform 0.2s ease;
-    }
+    /* ... CSS yang sudah ada di atas ... */
 
-    .logout-btn img:hover {
-        transform: scale(1.1);
-    }
+/* --- CSS KUSTOM UNTUK MODAL LOGOUT (SweetAlert) --- */
+
+/* Ikon Logout Hijau */
+.logout-icon-container {
+    background-color: #e5f5e5; /* Latar belakang hijau muda */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-icon-container .fas {
+    color: #007bff !important; /* Warna ikon hijau */
+    font-size: 28px;
+    /* Ikon panah keluar (fa-sign-out-alt) */
+}
+
+/* Modifikasi kotak modal SweetAlert */
+.sweet-alert {
+    border-radius: 15px !important;
+    padding: 30px 20px 20px !important;
+    text-align: center;
+}
+
+/* Judul dan Teks */
+.sweet-alert h2 {
+    font-weight: 600 !important;
+    color: #333 !important;
+    font-size: 1.5rem !important; /* Ukuran font untuk "Logout" */
+    margin-top: 5px !important; /* Jarak antara ikon dan teks "Logout" */
+}
+
+.sweet-alert p {
+    color: #6c757d !important;
+    font-size: 1rem !important;
+    margin-bottom: 25px !important;
+}
+
+/* Mengubah tampilan tombol */
+.sweet-alert .sa-button-container {
+    display: flex;
+    flex-direction: column-reverse; /* Membalik urutan agar Yes di atas Cancel */
+    width: 100%;
+    gap: 10px;
+}
+
+.sweet-alert .btn-custom-logout-yes {
+    background-color: #007bff !important; /* Biru */
+    color: white !important;
+    border-radius: 8px !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    font-weight: bold !important;
+    box-shadow: none !important;
+    order: 1; /* Menempatkan "Yes, Logout" di atas secara visual */
+}
+
+.sweet-alert .btn-custom-logout-cancel {
+    background-color: transparent !important; /* Transparan/putih */
+    color: #6c757d !important; /* Teks abu-abu */
+    border-radius: 8px !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    font-weight: bold !important;
+    box-shadow: none !important;
+    order: 2; /* Menempatkan "Cancel" di bawah secara visual */
+}
+
+/* Hapus ikon default (warning/gagal) SweetAlert agar hanya ikon kustom yang muncul */
+.sweet-alert .sa-icon.sa-warning {
+    display: none !important;
+}
+.sweet-alert .sa-icon.sa-warning::before,
+.sweet-alert .sa-icon.sa-warning::after {
+    display: none !important;
+}
 
     /* Cart Panel */
     .cart-panel {
@@ -309,18 +382,20 @@
                     </div>
 
                     <div class="col-md-12 mt-3">
+                        <div class="mb-2"> 
+                            <span class="fw-semibold text-secondary">TAG</span>
+                        </div>
+                        
                         <div class="d-flex align-items-center flex-wrap">
-                            <span class="fw-semibold me-2 text-secondary">TAG</span>
-                            <div id="tag-container" class="d-flex flex-wrap gap-2">
-                                
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #4a82ff; color: white; border-radius: 8px;">ALAT MANDI</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #4a82ff; color: white; border-radius: 8px;">MINUMAN</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PEMBALUT</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PET FOOD</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">ROKOK</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SABUN</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SEMBAKO</span>
-                                <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SPAREPART</span>
+                            <div id="tag-container" class="d-flex flex-wrap gap-2 w-100">
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #007bff; color: white; border-radius: 8px;">ALAT MANDI</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #007bff; color: white; border-radius: 8px;">MINUMAN</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #007bff; color: white; border-radius: 8px;">PEMBALUT</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #007bff; color: white; border-radius: 8px;">PET FOOD</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #007bff; color: white; border-radius: 8px;">ROKOK</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #007bff; color: white; border-radius: 8px;">SABUN</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #007bff; color: white; border-radius: 8px;">SEMBAKO</span>
+                                <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #007bff; color: white; border-radius: 8px;">SPAREPART</span>
                             </div>
                         </div>
                     </div>
@@ -466,20 +541,26 @@
     }
 
     function logout() {
-        swal({
-                title: "Are you sure?",
-                text: "Logout",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: 'btn-success',
-                confirmButtonText: 'Yes',
-                closeOnConfirm: false,
-                //closeOnCancel: false
-            },
-            function() {
-                window.location.href = "<?=base_url('action/logout?api='.$this->id_t); ?>";
-            });
-    }
+    // Menggunakan SweetAlert dengan konfigurasi yang meniru tampilan modern
+    swal({
+        title: "<div class='logout-icon-container'><i class='fas fa-sign-out-alt'></i></div>Logout", // Judul dengan ikon
+        text: "Are you sure you want to logout?",
+        type: "warning", // Ini akan memberikan ikon kuning, tapi kita akan menimpanya dengan CSS
+        showCancelButton: true,
+        confirmButtonText: "Yes, Logout",
+        cancelButtonText: "Cancel",
+        // Mengubah warna tombol menjadi biru dan abu-abu
+        confirmButtonClass: "btn-custom-logout-yes", // Class kustom untuk tombol "Yes, Logout"
+        cancelButtonClass: "btn-custom-logout-cancel", // Class kustom untuk tombol "Cancel"
+        closeOnConfirm: false,
+        html: true, // Memungkinkan HTML di judul
+    },
+    function(isConfirm) {
+        if (isConfirm) {
+            window.location.href = "<?=base_url('action/logout?api='.$this->id_t); ?>";
+        }
+    });
+}
 
     function pilih(cat, device) {
         swal({
@@ -675,30 +756,30 @@
                     // Jika tag dimuat melalui AJAX, Anda mungkin perlu memastikan styling diterapkan di sini
                     $('#tag-container').html(res);
                 } else {
-                    // Jika tidak dimuat via AJAX, gunakan hardcoded tags yang sudah di-style
+                    // PERBAIKAN: Jika tidak dimuat via AJAX, gunakan hardcoded tags yang sudah di-style biru
                     $('#tag-container').html(`
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #4a82ff; color: white; border-radius: 8px;">ALAT MANDI</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #4a82ff; color: white; border-radius: 8px;">MINUMAN</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PEMBALUT</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PET FOOD</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">ROKOK</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SABUN</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SEMBAKO</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SPAREPART</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #007bff; color: white; border-radius: 8px;">ALAT MANDI</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #007bff; color: white; border-radius: 8px;">MINUMAN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #007bff; color: white; border-radius: 8px;">PEMBALUT</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #007bff; color: white; border-radius: 8px;">PET FOOD</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #007bff; color: white; border-radius: 8px;">ROKOK</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #007bff; color: white; border-radius: 8px;">SABUN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #007bff; color: white; border-radius: 8px;">SEMBAKO</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #007bff; color: white; border-radius: 8px;">SPAREPART</span>
                     `);
                 }
             },
             error: function(error) {
-                 // Fallback to hardcoded tags if AJAX fails
+                 // PERBAIKAN: Fallback to hardcoded tags if AJAX fails, menggunakan style biru
                  $('#tag-container').html(`
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #4a82ff; color: white; border-radius: 8px;">ALAT MANDI</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #4a82ff; color: white; border-radius: 8px;">MINUMAN</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PEMBALUT</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">PET FOOD</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">ROKOK</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SABUN</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SEMBAKO</span>
-                        <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #e3f2fd; color: #171718; border-radius: 8px;">SPAREPART</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ALAT MANDI')" style="background-color: #007bff; color: white; border-radius: 8px;">ALAT MANDI</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('MINUMAN')" style="background-color: #007bff; color: white; border-radius: 8px;">MINUMAN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PEMBALUT')" style="background-color: #007bff; color: white; border-radius: 8px;">PEMBALUT</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('PET FOOD')" style="background-color: #007bff; color: white; border-radius: 8px;">PET FOOD</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('ROKOK')" style="background-color: #007bff; color: white; border-radius: 8px;">ROKOK</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SABUN')" style="background-color: #007bff; color: white; border-radius: 8px;">SABUN</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SEMBAKO')" style="background-color: #007bff; color: white; border-radius: 8px;">SEMBAKO</span>
+                        <span class="tag-chip btn btn-sm" onclick="filterTag('SPAREPART')" style="background-color: #007bff; color: white; border-radius: 8px;">SPAREPART</span>
                     `);
             }
         });
