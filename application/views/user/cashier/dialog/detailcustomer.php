@@ -15,6 +15,9 @@
             <th style="width: 20%; padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
                 Customer Name
             </th>
+            <th style="width: 20%; padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
+                Customer Code
+            </th>
             <th style="padding: 0px;font-size: 100%;vertical-align: middle;" class="text-bold;">
                 Gender
             </th>
@@ -45,6 +48,9 @@ foreach ($qhsd as $key) { ?>
             </td>
             <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
                 <?=$key->customer_name ?>
+            </td>
+            <td style=" padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
+                <?=$key->customer_code ?>
             </td>
             <td style="padding: 5px;font-size: 100%;vertical-align: middle;" class="text-left;">
                 <?=$key->gender ?>

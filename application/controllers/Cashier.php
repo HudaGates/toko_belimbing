@@ -176,11 +176,11 @@ function additem(){
         echo json_encode(array('success' => false, 'message' => 'TRANSAKSI TELAH SELESAI'));
     } else if(empty($qmp)){
         echo json_encode(array('success' => false, 'message' => 'SKU NOT FOUND / ITEM NON-ACTIVE')); // Info tambahan jika barang non-active
-    } else if($qmp->stock <= 0){
+   /* } else if($qmp->stock <= 0){
         echo json_encode(array('success' => false, 'message' => 'STOCK HABIS')); 
     } else if(($current_qty + $quantity_add) > $qmp->stock){
         echo json_encode(array('success' => false, 'message' => 'STOCK TIDAK CUKUP (Sisa: '.($qmp->stock - $current_qty).')'));
-    } else {
+    */} else {
         
         $persen_diskon = empty($qmp->discount) ? 0 : floatval($qmp->discount);
         $potongan_rupiah = (floatval($qmp->price) * $persen_diskon) / 100;
@@ -396,7 +396,6 @@ $qd = $this->db->update('tbl_history_sale',  $data, array('id'=> $cartid, ));
     $qmp=$this->db->query("SELECT * from tbl_history_sale_detail where sale_id= '". $cartid . "' ")->result();
 
     foreach($qmp as $key){
-      // FIX: GUNAKAN GREATEST(0, ...) AGAR MATEMATIKANYA MENTOK DI ANGKA 0, TIDAK BISA MINUS
       $this->db->query("UPDATE tbl_master_product SET stock = GREATEST(0, stock - ".$key->quantity.") WHERE product_code= '". $key->product_code . "' ");
     }
   } else {
@@ -470,6 +469,7 @@ function addcustomersubmit(){
 
   $data = array(
     'customer_name' => $customer_name,
+    'customer_code' => $this->input->post('customer_code'),
     'gender' => $gender,
     'phone' => $phone,
     'address' => $address,
@@ -485,7 +485,65 @@ $data = array(
 
   echo json_encode($data);
 }
+// ==========================================
+// CODE BACKEND UNTUK GET DATA, EDIT, & DELETE
+// ==========================================
 
+// 1. Fungsi untuk mengambil data 1 customer berdasarkan ID (dipanggil saat klik tombol Edit)
+public function getcustomerbyid() {
+    // Tangkap ID yang dikirim oleh AJAX
+    $id = $this->input->post('id');
+    
+    // Ambil data dari tabel sesuai ID
+    $data = $this->db->get_where('tbl_master_customer', array('id' => $id))->row_array();
+    
+    // Kembalikan data dalam bentuk JSON agar bisa dibaca oleh JavaScript auto-fill
+    echo json_encode($data);
+}
+
+// 2. Fungsi untuk memproses simpan perubahan (Update) data customer
+public function editcustomersubmit() {
+    // Tangkap ID utama sebagai acuan query WHERE
+    $id = $this->input->post('id');
+    
+    // Susun data baru yang dikirim dari form modal edit
+    $data = array(
+        'customer_name' => $this->input->post('customer_name'),
+        'customer_code' => $this->input->post('customer_code'),
+        'gender'        => $this->input->post('gender'),
+        'phone'         => $this->input->post('phone'),
+        'address'       => $this->input->post('address'),
+        'city'          => $this->input->post('city')
+    );
+
+    // Jalankan query update ke database
+    $this->db->where('id', $id);
+    $update = $this->db->update('tbl_master_customer', $data);
+
+    // Berikan respons JSON sukses/gagal ke AJAX
+    if($update) {
+        echo json_encode(array("success" => true));
+    } else {
+        echo json_encode(array("success" => false));
+    }
+}
+
+// 3. Fungsi untuk menghapus data customer dari database
+public function deletecustomer() {
+    // Tangkap ID customer yang akan dihapus
+    $id = $this->input->post('id');
+    
+    // Jalankan query delete
+    $this->db->where('id', $id);
+    $delete = $this->db->delete('tbl_master_customer');
+
+    // Berikan respons JSON sukses/gagal ke AJAX
+    if($delete) {
+        echo json_encode(array("success" => true));
+    } else {
+        echo json_encode(array("success" => false));
+    }
+}
 function truncate(){
   $this->db->query("TRUNCATE tbl_history_sale");
   $this->db->query("TRUNCATE tbl_history_sale_detail");

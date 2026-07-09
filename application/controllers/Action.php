@@ -16,8 +16,11 @@ class Action extends CI_Controller {
         // Inisialisasi data dasar
         $this->ip = $this->input->ip_address();
         $this->id_t = $this->input->get('api');
+        
+        // PENTING: Kodingan Satpam (Session Check) SUDAH SAYA CABUT dari sini.
+        // File Action.php adalah tempat orang Login, jadi biarkan terbuka untuk Guest.
     }
-
+        
     /**
      * Private helper untuk cek session aktif
      * Mencegah pengulangan code di index, scan, manual, dll.
@@ -41,14 +44,12 @@ class Action extends CI_Controller {
         
         if (!empty($query2)) {
             if ($query2->login_methode == '-') {
-                // Gunakan helper sha1 atau library jika tersedia
                 $random_hash = sha1(rand(1000, 10000000));
                 redirect($query2->url . "?=" . $random_hash);
             } else {
                 redirect('action/' . strtolower($query2->login_methode));
             }
         } else {
-            // Menggunakan Query Builder untuk kejelasan
             $this->db->select('a.*, b.web_path');
             $this->db->from('tbl_title a');
             $this->db->join('files b', 'a.image = b.id', 'left');
@@ -123,6 +124,9 @@ class Action extends CI_Controller {
         $this->load->view('loginmanual', $data);
     }
 
+    // ==========================================
+    // FUNGSI LOGIN & VALIDASI (HANYA SEKALI SAJA)
+    // ==========================================
     function login() {
         $data = array('success' => false, 'messages' => array(), 'id_t' => '');
         
@@ -184,7 +188,6 @@ class Action extends CI_Controller {
             
             if ($query && $query->num_rows() > 0) {
                 $row = $query->row();
-                // Pastikan logika hashing sama dengan fungsi login()
                 $id_s = sha1($row->username . $row->password);
                 
                 $cek = $this->s_model->s_id($id_s);
@@ -216,6 +219,7 @@ class Action extends CI_Controller {
             return false;
         }
     }
+    // ==========================================
 
     function logout() {
         $cek = $this->s_model->s_end($this->id_t);

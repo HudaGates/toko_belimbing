@@ -13,17 +13,24 @@
             <div class="form-group row align-items-center mb-3">
                 <label class="col-sm-3 text-muted text-sm-right mb-0">Customer</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Nama Lengkap">
+                    <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Nama Lengkap" required>
+                </div>
+            </div>
+
+            <div class="form-group row align-items-center mb-3">
+                <label class="col-sm-3 text-muted text-sm-right mb-0">Customer Code</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="customer_code" name="customer_code" placeholder="Contoh: 20192314" required>
                 </div>
             </div>
 
             <div class="form-group row align-items-center mb-3">
                 <label class="col-sm-3 text-muted text-sm-right mb-0">Gender</label>
                 <div class="col-sm-9">
-                    <select class="form-control custom-select" id="gender" name="gender">
+                    <select class="form-control custom-select" id="gender" name="gender" required>
                         <option value="" disabled selected>-- Pilih Gender --</option>
-                        <option value="Laki-laki">Laki-laki</option>
-                        <option value="Perempuan">Perempuan</option>
+                        <option value="L">Laki-laki</option>
+                        <option value="P">Perempuan</option>
                     </select>
                 </div>
             </div>
@@ -31,7 +38,7 @@
             <div class="form-group row align-items-center mb-3">
                 <label class="col-sm-3 text-muted text-sm-right mb-0">Phone</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="cash" name="phone" placeholder="Contoh: 08123456789">
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Contoh: 08123456789" required>
                 </div>
             </div>
 
@@ -59,47 +66,68 @@
         <?=form_close(); ?>
     </div>
 </div>
-<div class="row">
-    <div class="col-12 text-left">
-        <!-- <button type="button" class="btn btn-outline-danger btn-sm" onclick="">BATAL</button> -->
-        <!-- <button type="button" class="btn btn-primary btn-sm" onclick="addcustomer()">Submit</button> -->
 
-    </div>
-</div>
 <script>
 $('#mydata').submit(function(e) {
     e.preventDefault();
+
     var fa = $(this);
+
     $.ajax({
         url: fa.attr('action'),
         type: 'POST',
         data: fa.serialize(),
         cache: false,
+        dataType: 'json',
+
         success: function(res) {
-            // if (res.success == true) {
-            //     formcustomer()
-            //     $("#modalxl").modal('hide');
 
-            // }
+            if (res.success) {
 
-            $("#modallg").modal('hide');
-            location.reload();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data pelanggan berhasil ditambahkan',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        $("#modallg").modal('hide');
+                        location.reload();
+                    }
+
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Data pelanggan gagal ditambahkan',
+                    confirmButtonText: 'OK'
+                });
+
+            }
+
         },
-        error: function(error) {
-            console.log(error)
+
+        error: function(xhr, status, error) {
+
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Terjadi kesalahan pada server',
+                confirmButtonText: 'OK'
+            });
+
         }
     });
-
 });
 
 function cancel() {
-    $("#modalxl").modal('hide');
-}
-
-function printReceiptForm() {
-
-    var cartid = $('#cartid').val();
-    window.open("<?=base_url('cashier/print_receipt');?>?cartid=" + cartid + "&api=<?=$this->id_t;?>", "_blank");
-
+    $("#modallg").modal('hide');
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

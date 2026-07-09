@@ -50,6 +50,8 @@ class MasterModel extends CI_Model
                     Field::inst('supplier_name')->setFormatter(Format::ifEmpty(null)),
                     Field::inst('address')->setFormatter(Format::ifEmpty(null)),
                     Field::inst('phone')->setFormatter(Format::ifEmpty(null)),
+                    Field::inst('email')->setFormatter(Format::ifEmpty(null)),
+                    Field::inst('pic')->setFormatter(Format::ifEmpty(null)),
                     Field::inst('update_by')->set(true)->setValue($nama),
                     Field::inst('update_time')->set(true)->setValue(gmdate('Y-m-d H:i:s', time() + 60 * 60 * 7))
                 )

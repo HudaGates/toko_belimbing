@@ -23,4 +23,18 @@ class MY_Controller extends CI_Controller {
             $this->lang->load('toko', 'indonesian'); 
         }
     }
+    public function getcustomerbyid()
+{
+    if (!$this->input->is_ajax_request()) {
+        show_404();
+    }
+
+    $id = $this->input->post('id');
+
+    $data = $this->db
+        ->get_where('tbl_master_customer', ['id' => $id])
+        ->row_array();
+
+    echo json_encode($data);
+}
 }
